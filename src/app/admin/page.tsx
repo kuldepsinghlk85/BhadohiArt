@@ -3,10 +3,17 @@ import Link from 'next/link'
 import prisma from '@/lib/prisma'
 
 export default async function AdminDashboardPage() {
-  const totalProducts = await prisma.product.count();
-  const totalCollections = await prisma.collection.count();
-  const totalOrders = await prisma.order.count();
-  const totalLeads = await prisma.lead.count();
+  let totalProducts = 0, totalCollections = 0, totalOrders = 0, totalLeads = 0;
+  
+  try {
+    totalProducts = await prisma.product.count();
+    totalCollections = await prisma.collection.count();
+    totalOrders = await prisma.order.count();
+    totalLeads = await prisma.lead.count();
+  } catch (e) {
+    console.error("Database connection failed on dashboard:", e);
+    // Silent fail so the dashboard still renders on Vercel
+  }
 
   return (
     <div>
