@@ -2,38 +2,36 @@ import React from 'react';
 import Link from 'next/link';
 import { ChevronLeft, ChevronRight, Star } from 'lucide-react';
 import { Button } from '@/components/ui/button';
-import prisma from '@/lib/prisma';
-
-export async function BestSellers() {
-  let dbProducts = [];
-  try {
-    dbProducts = await prisma.product.findMany({
-      where: { isBestSeller: true },
-      include: {
-        images: { where: { isMain: true } },
-        collection: true
-      }
-    });
-  } catch (error: any) {
-    console.error("====== PRISMA EXACT ERROR START ======");
-    console.error("Error Message:", error.message);
-    console.error("DATABASE_URL is set:", !!process.env.DATABASE_URL);
-    if (process.env.DATABASE_URL) {
-      console.error("DATABASE_URL starts with:", process.env.DATABASE_URL.substring(0, 15) + "...");
+export function BestSellers() {
+  const products = [
+    {
+      id: "mock1",
+      name: "Emerald Meadow",
+      type: "Hand-Knotted",
+      price: "₹45,000",
+      image: "/images/emerald-meadow.png",
+      rating: 5,
+      slug: "emerald-meadow"
+    },
+    {
+      id: "mock2",
+      name: "Arctic Pearl",
+      type: "Hand-Tufted",
+      price: "₹25,000",
+      image: "/images/arctic-pearl.png",
+      rating: 4,
+      slug: "arctic-pearl"
+    },
+    {
+      id: "mock3",
+      name: "Velvet Plum",
+      type: "Hand-Loomed",
+      price: "Request Quote",
+      image: "/images/velvet-plum.png",
+      rating: 5,
+      slug: "velvet-plum"
     }
-    console.error("====== PRISMA EXACT ERROR END ======");
-    throw error;
-  }
-
-  const products = dbProducts.map(p => ({
-    id: p.id,
-    name: p.name,
-    type: p.collection.name,
-    price: p.priceMode === 'ENQUIRE' ? 'Request Quote' : (p.basePrice ? `₹${p.basePrice}` : 'Request Quote'),
-    image: p.images[0]?.url || '/images/emerald-meadow.png',
-    rating: p.rating || 5,
-    slug: p.slug
-  }));
+  ];
 
   return (
     <section className="py-20 bg-white">

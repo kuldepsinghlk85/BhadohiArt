@@ -1,69 +1,18 @@
 import React from 'react';
 import { ProductGrid } from '@/components/ecommerce/ProductGrid';
 import { FilterSidebar } from './FilterSidebar';
-import prisma from '@/lib/prisma';
-import { Prisma } from '@prisma/client';
+import { mockCollections, mockProducts } from '@/lib/mockData';
 
 export default async function CollectionsPage({ searchParams }: { searchParams: Promise<{ [key: string]: string | string[] | undefined }> }) {
   const params = await searchParams;
   const categories = params.category ? (Array.isArray(params.category) ? params.category : [params.category]) : [];
-  const price = params.price as string | undefined;
-
-  // Build the Prisma where clause based on filters
-  const where: Prisma.ProductWhereInput = {};
   
+  const collections = mockCollections;
+  
+  let products = mockProducts;
   if (categories.length > 0) {
-    where.collection = {
-      slug: { in: categories }
-    };
+    products = products.filter(p => categories.includes(p.slug));
   }
-
-  if (price) {
-    if (price === 'under-10k') {
-      where.basePrice = { lt: 10000 };
-    } else if (price === '10k-25k') {
-      where.basePrice = { gte: 10000, lte: 25000 };
-    } else if (price === 'above-25k') {
-      where.basePrice = { gt: 25000 };
-    }
-  }
-
-  let collections = [];
-  let dbProducts = [];
-  
-  try {
-    collections = await prisma.collection.findMany();
-
-    dbProducts = await prisma.product.findMany({
-      where,
-      include: {
-        images: {
-          where: { isMain: true }
-        },
-        collection: true
-      }
-    });
-  } catch (error: any) {
-    return (
-      <div className="p-10 bg-red-50 text-red-900 min-h-screen">
-        <h1 className="text-2xl font-bold mb-4">Database Diagnostics</h1>
-        <pre className="whitespace-pre-wrap bg-white p-4 border">{error.message}</pre>
-        <p className="mt-4">DATABASE_URL is set: {String(!!process.env.DATABASE_URL)}</p>
-        <p>URL starts with: {process.env.DATABASE_URL ? process.env.DATABASE_URL.substring(0, 15) : 'N/A'}</p>
-        <p>NODE_ENV: {process.env.NODE_ENV}</p>
-      </div>
-    );
-  }
-
-  const products = dbProducts.map(p => ({
-    id: p.id,
-    name: p.name,
-    type: p.collection.name,
-    price: p.priceMode === 'ENQUIRE' ? 'Request Quote' : (p.basePrice ? `₹${p.basePrice}` : 'Request Quote'),
-    image: p.images[0]?.url || '/images/emerald-meadow.png',
-    rating: p.rating || 5,
-    slug: p.slug
-  }));
 
   return (
     <div className="bg-[#FAF7F0] min-h-screen pt-24 pb-20">
