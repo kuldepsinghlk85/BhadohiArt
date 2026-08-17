@@ -11,7 +11,7 @@ export default async function CollectionsPage({ searchParams }: { searchParams: 
   
   let products = mockProducts;
   if (categories.length > 0) {
-    products = products.filter(p => categories.includes(p.slug));
+    products = products.filter(p => categories.includes(p.collection?.slug));
   }
 
   return (
