@@ -4,33 +4,53 @@ import Link from 'next/link';
 import { ProductGallery } from '@/components/ecommerce/ProductGallery';
 import { ProductActions } from '@/components/ecommerce/ProductActions';
 import { notFound } from 'next/navigation';
+import prisma from '@/lib/prisma';
 
 export default async function ProductPage({ params }: { params: Promise<{ slug: string }> }) {
   const { slug } = await params;
   
-  const { mockProducts } = await import('@/lib/mockData');
-  const dbProduct = mockProducts.find(p => p.slug === slug);
+  const dbProduct = await prisma.product.findUnique({
+    where: { slug },
+    include: {
+      images: true,
+      collection: true,
+      variants: true
+    }
+  });
 
   if (!dbProduct) {
     notFound();
   }
 
-  const mainImage = dbProduct.image || '/images/emerald-meadow.png';
-  const allImages = [mainImage];
+  const mainImage = dbProduct.images.find(img => img.isMain)?.url || '/images/emerald-meadow.png';
+  const allImages = dbProduct.images.length > 0 ? dbProduct.images.map(img => img.url) : [mainImage];
 
   // Parse features gracefully
-  const featuresList = dbProduct.features || [];
+  let featuresList: string[] = [];
+  if (dbProduct.features) {
+    try {
+      featuresList = JSON.parse(dbProduct.features);
+    } catch (e) {
+      featuresList = [];
+    }
+  }
 
   const product = {
     name: dbProduct.name,
-    price: dbProduct.price,
-    type: dbProduct.type,
+    price: dbProduct.priceMode === 'ENQUIRE' ? 'Request Quote' : (dbProduct.basePrice ? `₹${dbProduct.basePrice}` : 'Request Quote'),
+    type: `${dbProduct.collection.name}`,
     rating: dbProduct.rating || 5,
     reviews: 24, // hardcoded for now
-    description: dbProduct.description,
-    features: featuresList,
+    description: dbProduct.description || 'Experience the ultimate luxury with this meticulously handcrafted carpet. Woven by master artisans in Bhadohi, this piece features intricate traditional motifs modernized for contemporary spaces. Made from 100% premium materials, it offers unparalleled softness and durability.',
+    features: featuresList.length > 0 ? featuresList : [
+      'Hand-knotted by expert artisans',
+      'Premium Materials',
+      'Eco-friendly natural dyes',
+      'Anti-bacterial & Hypoallergenic',
+      'Custom sizes available upon request'
+    ],
     images: allImages,
-    variants: []
+    variants: dbProduct.variants
   };
 
   return (
