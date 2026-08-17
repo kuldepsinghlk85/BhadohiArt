@@ -7,6 +7,7 @@ import { Button } from '@/components/ui/button';
 import { WhatsAppInquiryModal } from '@/components/ecommerce/WhatsAppInquiryModal';
 
 const SLIDE_IMAGES = [
+  '/images/products/infinity-06.jpg', // New Infinity 06 room shot (top frame)
   '/images/INFINITY/img_p14_1.png',
   '/images/INFINITY/img_p15_1.png',
   '/images/INFINITY/img_p17_1.png',
@@ -34,10 +35,13 @@ export function Hero() {
       {SLIDE_IMAGES.map((img, index) => (
         <div 
           key={index}
-          className={`absolute top-0 right-0 w-full md:w-[75%] h-full bg-cover bg-center bg-no-repeat transition-opacity duration-1000 ease-in-out ${
+          className={`absolute top-0 right-0 w-full md:w-[75%] h-full bg-cover bg-no-repeat transition-opacity duration-1000 ease-in-out ${
             index === currentSlide ? 'opacity-100 z-0' : 'opacity-0 -z-10'
           }`}
-          style={{ backgroundImage: `url('${img}')` }}
+          style={{ 
+            backgroundImage: `url('${img}')`,
+            backgroundPosition: img.includes('infinity-06') ? 'top center' : 'center'
+          }}
         />
       ))}
       
