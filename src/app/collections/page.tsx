@@ -28,17 +28,32 @@ export default async function CollectionsPage({ searchParams }: { searchParams: 
     }
   }
 
-  const collections = await prisma.collection.findMany();
+  let collections = [];
+  let dbProducts = [];
+  
+  try {
+    collections = await prisma.collection.findMany();
 
-  const dbProducts = await prisma.product.findMany({
-    where,
-    include: {
-      images: {
-        where: { isMain: true }
-      },
-      collection: true
-    }
-  });
+    dbProducts = await prisma.product.findMany({
+      where,
+      include: {
+        images: {
+          where: { isMain: true }
+        },
+        collection: true
+      }
+    });
+  } catch (error: any) {
+    return (
+      <div className="p-10 bg-red-50 text-red-900 min-h-screen">
+        <h1 className="text-2xl font-bold mb-4">Database Diagnostics</h1>
+        <pre className="whitespace-pre-wrap bg-white p-4 border">{error.message}</pre>
+        <p className="mt-4">DATABASE_URL is set: {String(!!process.env.DATABASE_URL)}</p>
+        <p>URL starts with: {process.env.DATABASE_URL ? process.env.DATABASE_URL.substring(0, 15) : 'N/A'}</p>
+        <p>NODE_ENV: {process.env.NODE_ENV}</p>
+      </div>
+    );
+  }
 
   const products = dbProducts.map(p => ({
     id: p.id,
