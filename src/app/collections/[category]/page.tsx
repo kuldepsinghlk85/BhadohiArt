@@ -1,7 +1,6 @@
 import React from 'react';
 import { ProductGrid } from '@/components/ecommerce/ProductGrid';
 import Link from 'next/link';
-import prisma from '@/lib/prisma';
 
 export default async function CollectionPage({ params }: { params: Promise<{ category: string }> }) {
   const { category } = await params;
@@ -9,28 +8,8 @@ export default async function CollectionPage({ params }: { params: Promise<{ cat
   // Format the category for display
   const title = category.split('-').map(w => w.charAt(0).toUpperCase() + w.slice(1)).join(' ') + ' Collection';
   
-  // Fetch from DB
-  const dbProducts = await prisma.product.findMany({
-    where: {
-      collection: {
-        slug: category
-      }
-    },
-    include: {
-      images: { where: { isMain: true } },
-      collection: true
-    }
-  });
-
-  const displayProducts = dbProducts.map(p => ({
-    id: p.id,
-    name: p.name,
-    type: p.collection.name,
-    price: p.priceMode === 'ENQUIRE' ? 'Request Quote' : (p.basePrice ? `₹${p.basePrice}` : 'Request Quote'),
-    image: p.images[0]?.url || '/images/emerald-meadow.png',
-    rating: p.rating || 5,
-    slug: p.slug
-  }));
+  const { mockProducts } = await import('@/lib/mockData');
+  const displayProducts = mockProducts.filter(p => p.slug.includes(category));
 
   return (
     <div className="bg-[#FAF7F0] min-h-screen pt-24 pb-20">

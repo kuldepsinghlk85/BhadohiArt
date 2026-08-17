@@ -1,54 +1,18 @@
 import React from 'react';
 import { ProductGrid } from '@/components/ecommerce/ProductGrid';
 import { FilterSidebar } from './FilterSidebar';
-import prisma from '@/lib/prisma';
-import { Prisma } from '@prisma/client';
+import { mockCollections, mockProducts } from '@/lib/mockData';
 
 export default async function CollectionsPage({ searchParams }: { searchParams: Promise<{ [key: string]: string | string[] | undefined }> }) {
   const params = await searchParams;
   const categories = params.category ? (Array.isArray(params.category) ? params.category : [params.category]) : [];
-  const price = params.price as string | undefined;
-
-  // Build the Prisma where clause based on filters
-  const where: Prisma.ProductWhereInput = {};
   
+  const collections = mockCollections;
+  
+  let products = mockProducts;
   if (categories.length > 0) {
-    where.collection = {
-      slug: { in: categories }
-    };
+    products = products.filter(p => categories.includes(p.slug));
   }
-
-  if (price) {
-    if (price === 'under-10k') {
-      where.basePrice = { lt: 10000 };
-    } else if (price === '10k-25k') {
-      where.basePrice = { gte: 10000, lte: 25000 };
-    } else if (price === 'above-25k') {
-      where.basePrice = { gt: 25000 };
-    }
-  }
-
-  const collections = await prisma.collection.findMany();
-
-  const dbProducts = await prisma.product.findMany({
-    where,
-    include: {
-      images: {
-        where: { isMain: true }
-      },
-      collection: true
-    }
-  });
-
-  const products = dbProducts.map(p => ({
-    id: p.id,
-    name: p.name,
-    type: p.collection.name,
-    price: p.priceMode === 'ENQUIRE' ? 'Request Quote' : (p.basePrice ? `₹${p.basePrice}` : 'Request Quote'),
-    image: p.images[0]?.url || '/images/emerald-meadow.png',
-    rating: p.rating || 5,
-    slug: p.slug
-  }));
 
   return (
     <div className="bg-[#FAF7F0] min-h-screen pt-24 pb-20">
