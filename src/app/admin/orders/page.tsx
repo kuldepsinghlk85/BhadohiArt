@@ -4,13 +4,13 @@ import prisma from '@/lib/prisma';
 import { format } from 'date-fns';
 
 export default async function AdminOrdersPage() {
-  const orders = await prisma.order.findMany({
+  let orders: any[] = []; try { orders = await prisma.order.findMany({
     include: {
       user: true,
       items: true
     },
     orderBy: { createdAt: 'desc' }
-  });
+  }); } catch(e) {}
 
   return (
     <div>

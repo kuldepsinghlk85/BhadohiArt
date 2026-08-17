@@ -5,7 +5,7 @@ import { format } from 'date-fns';
 export default async function AdminInquiriesPage() {
   const inquiries = await prisma.quotation.findMany({
     orderBy: { createdAt: 'desc' }
-  });
+  }); } catch (e) {}
 
   return (
     <div>

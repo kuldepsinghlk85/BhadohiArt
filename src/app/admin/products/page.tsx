@@ -16,12 +16,12 @@ async function deleteProduct(formData: FormData) {
 }
 
 export default async function AdminProductsPage() {
-  const products = await prisma.product.findMany({
+  let products: any[] = []; try { products = await prisma.product.findMany({
     include: {
       collection: true
     },
     orderBy: { createdAt: 'desc' }
-  });
+  }); } catch(e) {}
 
   return (
     <div>
