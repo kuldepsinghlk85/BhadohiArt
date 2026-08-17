@@ -7,15 +7,16 @@ import { Button } from '@/components/ui/button';
 import { WhatsAppInquiryModal } from '@/components/ecommerce/WhatsAppInquiryModal';
 
 const SLIDE_IMAGES = [
+  '/images/products/infinity-01.jpg',
+  '/images/products/infinity-02.jpg',
+  '/images/products/infinity-03.jpg',
+  '/images/products/infinity-04.jpg',
+  '/images/products/infinity-05.jpg',
   '/images/products/infinity-06.jpg',
   '/images/products/infinity-07.jpg',
   '/images/products/infinity-08.jpg',
   '/images/products/infinity-09.jpg',
-  '/images/products/infinity-10.jpg',
-  '/images/INFINITY/img_p14_1.png',
-  '/images/INFINITY/img_p15_1.png',
-  '/images/INFINITY/img_p17_1.png',
-  '/images/INFINITY/img_p18_1.png'
+  '/images/products/infinity-10.jpg'
 ];
 
 export function Hero() {
