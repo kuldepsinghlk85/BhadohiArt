@@ -29,16 +29,10 @@ export function Header({ user }: HeaderProps) {
       hasDropdown: true,
       subLinks: [
         { label: 'All Collections', href: '/collections' },
-        { label: 'Handloom', href: '/collections?category=handloom' },
-        { label: 'Designer', href: '/collections?category=designer' },
-        { label: 'Plush', href: '/collections?category=plush' },
-        { label: 'Textured', href: '/collections?category=textured' },
-        { label: 'Modern', href: '/collections?category=modern' },
-        { label: 'Contemporary', href: '/collections?category=contemporary' },
-        { label: 'Exclusive', href: '/collections?category=exclusive' },
         { label: 'Infinity', href: '/collections?category=infinity' },
       ]
     },
+    { label: 'GRAND ROOM', href: '/grand-room' },
     { label: 'WALL-TO-WALL', href: '/wall-to-wall' },
     { label: 'PORTFOLIO', href: '/projects' },
     { label: 'ABOUT US', href: '/about' },
@@ -47,7 +41,7 @@ export function Header({ user }: HeaderProps) {
   ];
 
   if (!user) {
-    navLinks.push({ label: 'LOGIN', href: '/login' });
+    navLinks.push({ label: 'LOGIN', href: '/admin/login' });
   } else if (user.role !== 'admin') {
     navLinks.push({ 
       label: 'MY ACCOUNT', 

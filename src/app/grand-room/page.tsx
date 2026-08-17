@@ -76,14 +76,17 @@ const FALLBACK_SLIDES = [
 ];
 
 export default async function GrandRoomPage() {
-  const products = await prisma.product.findMany({
-    where: { isGrandRoomLook: true },
-    include: {
-      images: true,
-      collection: true
-    },
-    orderBy: { createdAt: 'desc' }
-  });
+  let products: any[] = [];
+  try {
+    products = await prisma.product.findMany({
+      where: { isGrandRoomLook: true },
+      include: {
+        images: true,
+        collection: true
+      },
+      orderBy: { createdAt: 'desc' }
+    });
+  } catch (e) {}
 
   let slides = products.map(p => ({
     id: p.id,
