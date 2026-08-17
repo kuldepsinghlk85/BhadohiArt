@@ -6,7 +6,7 @@ export async function GET() {
   try {
     let prismaError = null;
     let productsCount = -1;
-    let url = process.env.DATABASE_URL || '';
+    const url = process.env.DATABASE_URL || '';
     
     // Attempt dynamic import to see if initialization crashes
     try {
