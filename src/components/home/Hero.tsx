@@ -7,15 +7,15 @@ import { Button } from '@/components/ui/button';
 import { WhatsAppInquiryModal } from '@/components/ecommerce/WhatsAppInquiryModal';
 
 const SLIDE_IMAGES = [
-  '/images/products/infinity-06.jpg', // New Infinity 06 room shot (top frame)
+  '/images/products/infinity-06.jpg',
+  '/images/products/infinity-07.jpg',
+  '/images/products/infinity-08.jpg',
+  '/images/products/infinity-09.jpg',
+  '/images/products/infinity-10.jpg',
   '/images/INFINITY/img_p14_1.png',
   '/images/INFINITY/img_p15_1.png',
   '/images/INFINITY/img_p17_1.png',
-  '/images/INFINITY/img_p18_1.png',
-  '/images/INFINITY/img_p4_1.png',
-  '/images/INFINITY/img_p5_1.png',
-  '/images/INFINITY/img_p6_1.png',
-  '/images/INFINITY/img_p7_1.png',
+  '/images/INFINITY/img_p18_1.png'
 ];
 
 export function Hero() {
@@ -40,7 +40,7 @@ export function Hero() {
           }`}
           style={{ 
             backgroundImage: `url('${img}')`,
-            backgroundPosition: img.includes('infinity-06') ? 'top center' : 'center'
+            backgroundPosition: img.includes('infinity-') ? 'top center' : 'center'
           }}
         />
       ))}
