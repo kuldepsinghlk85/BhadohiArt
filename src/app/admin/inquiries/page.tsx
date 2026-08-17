@@ -3,9 +3,12 @@ import prisma from '@/lib/prisma';
 import { format } from 'date-fns';
 
 export default async function AdminInquiriesPage() {
-  const inquiries = await prisma.quotation.findMany({
-    orderBy: { createdAt: 'desc' }
-  }); } catch (e) {}
+  let inquiries: any[] = [];
+  try {
+    inquiries = await prisma.quotation.findMany({
+      orderBy: { createdAt: 'desc' }
+    });
+  } catch (e) {}
 
   return (
     <div>

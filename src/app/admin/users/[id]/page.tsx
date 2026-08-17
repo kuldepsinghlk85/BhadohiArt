@@ -32,17 +32,20 @@ async function deleteUserWithData(formData: FormData) {
 export default async function AdminUserDetailPage({ params }: { params: Promise<{ id: string }> }) {
   const { id } = await params;
 
-  let user: any = null; try { user = await prisma.user.findUnique({
-    where: { id },
-    include: {
-      orders: {
-        orderBy: { createdAt: 'desc' },
-        include: {
-          items: true
+  let user: any = null; 
+  try { 
+    user = await prisma.user.findUnique({
+      where: { id },
+      include: {
+        orders: {
+          orderBy: { createdAt: 'desc' },
+          include: {
+            items: true
+          }
         }
       }
-    }
-  });
+    });
+  } catch (e) {}
 
   if (!user) {
     notFound();

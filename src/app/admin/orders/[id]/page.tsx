@@ -27,18 +27,21 @@ async function updateOrderStatus(formData: FormData) {
 export default async function AdminOrderDetailPage({ params }: { params: Promise<{ id: string }> }) {
   const { id } = await params;
 
-  let order: any = null; try { order = await prisma.order.findUnique({
-    where: { id },
-    include: {
-      user: true,
-      items: {
-        include: {
-          product: true
-        }
-      },
-      payment: true
-    }
-  });
+  let order: any = null; 
+  try { 
+    order = await prisma.order.findUnique({
+      where: { id },
+      include: {
+        user: true,
+        items: {
+          include: {
+            product: true
+          }
+        },
+        payment: true
+      }
+    });
+  } catch (e) {}
 
   if (!order) {
     notFound();
