@@ -5,13 +5,25 @@ import { Button } from '@/components/ui/button';
 import prisma from '@/lib/prisma';
 
 export async function BestSellers() {
-  const dbProducts = await prisma.product.findMany({
-    where: { isBestSeller: true },
-    include: {
-      images: { where: { isMain: true } },
-      collection: true
+  let dbProducts = [];
+  try {
+    dbProducts = await prisma.product.findMany({
+      where: { isBestSeller: true },
+      include: {
+        images: { where: { isMain: true } },
+        collection: true
+      }
+    });
+  } catch (error: any) {
+    console.error("====== PRISMA EXACT ERROR START ======");
+    console.error("Error Message:", error.message);
+    console.error("DATABASE_URL is set:", !!process.env.DATABASE_URL);
+    if (process.env.DATABASE_URL) {
+      console.error("DATABASE_URL starts with:", process.env.DATABASE_URL.substring(0, 15) + "...");
     }
-  });
+    console.error("====== PRISMA EXACT ERROR END ======");
+    throw error;
+  }
 
   const products = dbProducts.map(p => ({
     id: p.id,
