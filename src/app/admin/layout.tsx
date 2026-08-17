@@ -6,9 +6,12 @@ import { redirect } from 'next/navigation'
 export default async function AdminLayout({ children }: { children: React.ReactNode }) {
   const session = await auth();
 
-  // Middleware also protects this, but good to have double check
+  // If there's no session, it means they are on the /admin/login page
+  // (because middleware protects all other /admin routes).
+  // Return just the children so they don't see the admin header on the login page,
+  // and this prevents the ERR_TOO_MANY_REDIRECTS loop!
   if (!session) {
-    redirect('/admin/login');
+    return <>{children}</>;
   }
 
   return (
