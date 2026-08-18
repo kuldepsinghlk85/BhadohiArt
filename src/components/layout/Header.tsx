@@ -29,7 +29,7 @@ export function Header({ user }: HeaderProps) {
       hasDropdown: true,
       subLinks: [
         { label: 'All Collections', href: '/collections' },
-        { label: 'Infinity', href: '/collections?category=infinity' },
+        { label: 'Infinity', href: '/collections/infinity' },
       ]
     },
     { label: 'GRAND ROOM', href: '/grand-room' },
@@ -43,14 +43,26 @@ export function Header({ user }: HeaderProps) {
 
   if (!user) {
     navLinks.push({ label: 'LOGIN', href: '/admin/login' });
-  } else if (user.role !== 'admin') {
+  } else if (user.role === 'admin') {
+    navLinks.push({ 
+      label: 'ADMIN PANEL', 
+      href: '/admin',
+      hasDropdown: true,
+      subLinks: [
+        { label: 'Dashboard', href: '/admin' },
+        { label: 'Products', href: '/admin/products' },
+        { label: 'Orders', href: '/admin/orders' },
+        { label: 'Inquiries', href: '/admin/inquiries' }
+      ]
+    });
+  } else {
     navLinks.push({ 
       label: 'MY ACCOUNT', 
       href: '/account',
       hasDropdown: true,
       subLinks: [
         { label: 'Dashboard', href: '/account' },
-        { label: 'My Orders', href: '/account' }
+        { label: 'My Orders', href: '/account/orders' }
       ]
     });
   }
