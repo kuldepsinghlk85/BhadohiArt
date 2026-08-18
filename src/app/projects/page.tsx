@@ -2,6 +2,7 @@ import React from 'react';
 import prisma from '@/lib/prisma';
 import { ProjectsClient } from './ProjectsClient';
 import { Metadata } from 'next';
+import { mockCollections } from '@/lib/mockData';
 
 export const metadata: Metadata = {
   title: 'Portfolio | Bhadohi Arts Weave',
@@ -9,28 +10,41 @@ export const metadata: Metadata = {
 };
 
 export default async function ProjectsPage() {
-  // Fetch all collections and their products (to get fallback images)
-  const dbCollections = await prisma.collection.findMany({
-    include: {
-      products: {
-        include: {
-          images: true
+  let dbCollections: any[] = [];
+  let sliderSettings: any[] = [];
+
+  try {
+    // Fetch all collections and their products (to get fallback images)
+    dbCollections = await prisma.collection.findMany({
+      include: {
+        products: {
+          include: {
+            images: true
+          }
+        }
+      },
+      orderBy: {
+        name: 'asc'
+      }
+    });
+
+    // Fetch configured slider images from SiteSettings
+    sliderSettings = await prisma.siteSetting.findMany({
+      where: {
+        key: {
+          startsWith: 'portfolio_slider_'
         }
       }
-    },
-    orderBy: {
-      name: 'asc'
-    }
-  });
-
-  // Fetch configured slider images from SiteSettings
-  const sliderSettings = await prisma.siteSetting.findMany({
-    where: {
-      key: {
-        startsWith: 'portfolio_slider_'
-      }
-    }
-  });
+    });
+  } catch (e) {
+    // Fallback to mock collections if DB fails (e.g. on Vercel)
+    dbCollections = mockCollections.map(c => ({
+      id: c.id,
+      name: c.name,
+      slug: c.slug,
+      products: []
+    }));
+  }
 
   // Format data for the client component
   const categories = dbCollections.map(collection => {
