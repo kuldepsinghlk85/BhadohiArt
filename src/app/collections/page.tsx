@@ -1,4 +1,5 @@
 import React from 'react';
+import prisma from '@/lib/prisma';
 import { ProductGrid } from '@/components/ecommerce/ProductGrid';
 import { FilterSidebar } from './FilterSidebar';
 import { mockCollections, mockProducts } from '@/lib/mockData';
@@ -7,11 +8,41 @@ export default async function CollectionsPage({ searchParams }: { searchParams: 
   const params = await searchParams;
   const categories = params.category ? (Array.isArray(params.category) ? params.category : [params.category]) : [];
   
-  const collections = mockCollections;
-  
-  let products = mockProducts;
-  if (categories.length > 0) {
-    products = products.filter(p => categories.includes(p.collection?.slug));
+  let collections = mockCollections;
+  let products: any[] = mockProducts;
+
+  try {
+    const dbCollections = await prisma.collection.findMany({ orderBy: { name: 'asc' } });
+    if (dbCollections.length > 0) collections = dbCollections;
+
+    const dbProducts = await prisma.product.findMany({
+      where: categories.length > 0 ? {
+        collection: { slug: { in: categories } },
+        isVisible: true
+      } : { isVisible: true },
+      include: {
+        images: true,
+        collection: true
+      }
+    });
+
+    if (dbProducts.length > 0) {
+      // Map dbProducts to match the mock format
+      products = dbProducts.map(p => ({
+        id: p.id,
+        name: p.name,
+        slug: p.slug,
+        description: p.description,
+        price: p.basePrice || "Request Quote",
+        collection: p.collection,
+        images: p.images
+      }));
+    }
+  } catch (e) {
+    // Fallback to mock
+    if (categories.length > 0) {
+      products = products.filter(p => categories.includes(p.collection?.slug));
+    }
   }
 
   return (

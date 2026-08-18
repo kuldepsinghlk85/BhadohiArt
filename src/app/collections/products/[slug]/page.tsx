@@ -8,15 +8,58 @@ import { notFound } from 'next/navigation';
 export default async function ProductPage({ params }: { params: Promise<{ slug: string }> }) {
   const { slug } = await params;
   
-  const { mockProducts } = await import('@/lib/mockData');
-  const dbProduct = mockProducts.find(p => p.slug === slug);
+  let dbProduct: any = null;
+
+  try {
+    const prismaProduct = await prisma.product.findUnique({
+      where: { slug },
+      include: {
+        images: true,
+        collection: true
+      }
+    });
+
+    if (prismaProduct) {
+      let parsedFeatures: string[] = [];
+      try {
+        if (prismaProduct.features) {
+          const parsed = JSON.parse(prismaProduct.features);
+          parsedFeatures = parsed.features || [];
+        }
+      } catch (e) {}
+
+      dbProduct = {
+        id: prismaProduct.id,
+        name: prismaProduct.name,
+        slug: prismaProduct.slug,
+        description: prismaProduct.description,
+        price: prismaProduct.basePrice || "Request Quote",
+        type: prismaProduct.collection.name,
+        priceMode: prismaProduct.priceMode,
+        image: prismaProduct.images.find(img => img.isMain)?.url || prismaProduct.images[0]?.url,
+        features: parsedFeatures,
+        images: prismaProduct.images.map(img => img.url),
+      };
+    }
+  } catch (e) {
+    // Database connection failed, proceed to fallback
+  }
+
+  // Fallback if DB fetch failed or product not found
+  if (!dbProduct) {
+    const { mockProducts } = await import('@/lib/mockData');
+    dbProduct = mockProducts.find(p => p.slug === slug);
+  }
 
   if (!dbProduct) {
     notFound();
   }
 
   const mainImage = dbProduct.image || '/images/emerald-meadow.png';
-  const allImages = [mainImage];
+  const allImages = dbProduct.images || [mainImage];
+  if (allImages.length === 0 && mainImage) {
+    allImages.push(mainImage);
+  }
 
   // Parse features gracefully
   const featuresList = dbProduct.features || [];

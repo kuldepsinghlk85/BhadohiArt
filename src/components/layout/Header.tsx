@@ -37,6 +37,7 @@ export function Header({ user }: HeaderProps) {
     { label: 'PORTFOLIO', href: '/projects' },
     { label: 'ABOUT US', href: '/about' },
     { label: 'CATALOGUE', href: '/catalogue' },
+    { label: 'TRACK ORDER', href: '/track-order' },
     { label: 'CONTACT', href: '/contact' },
   ];
 
