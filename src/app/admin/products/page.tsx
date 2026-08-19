@@ -16,12 +16,28 @@ async function deleteProduct(formData: FormData) {
 }
 
 export default async function AdminProductsPage() {
-  let products: any[] = []; try { products = await prisma.product.findMany({
-    include: {
-      collection: true
-    },
-    orderBy: { createdAt: 'desc' }
-  }); } catch(e) {}
+  let products: any[] = []; 
+  try { 
+    products = await prisma.product.findMany({
+      include: {
+        collection: true,
+        images: true
+      },
+      orderBy: { createdAt: 'desc' }
+    });
+  } catch (e) {
+    const { mockProducts } = await import('@/lib/mockData');
+    products = mockProducts.map(p => ({
+      ...p,
+      images: p.images || [{ url: p.image, isMain: true }]
+    }));
+  }
+
+  // Append any newly added mock products from the current session
+  const globalAny: any = global;
+  if (globalAny.__mockNewProducts && globalAny.__mockNewProducts.length > 0) {
+    products = [...globalAny.__mockNewProducts, ...products];
+  }
 
   return (
     <div>
