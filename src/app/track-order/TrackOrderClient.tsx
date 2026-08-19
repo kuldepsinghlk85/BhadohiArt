@@ -112,7 +112,7 @@ export default function TrackOrderClient() {
                   <p className="font-bold text-sm">Qty: {item.quantity}</p>
                 </div>
                 <div className="text-right">
-                  <p className="font-bold text-[var(--color-brand-dark)]">₹{item.price.toLocaleString()}</p>
+                  <p className="font-bold text-[var(--color-brand-dark)]">₹{(item.price || 0).toLocaleString()}</p>
                 </div>
               </div>
             ))}
@@ -120,7 +120,7 @@ export default function TrackOrderClient() {
           
           <div className="mt-8 pt-8 border-t border-[var(--color-brand-border)] flex justify-between items-center">
             <span className="font-bold text-[var(--color-brand-dark)] uppercase tracking-widest">Order Total</span>
-            <span className="font-bold text-2xl text-[var(--color-brand-burgundy)]">₹{order.total.toLocaleString()}</span>
+            <span className="font-bold text-2xl text-[var(--color-brand-burgundy)]">₹{(order.total || 0).toLocaleString()}</span>
           </div>
         </div>
       )}
