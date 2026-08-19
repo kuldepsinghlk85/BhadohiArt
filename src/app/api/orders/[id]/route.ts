@@ -22,6 +22,13 @@ export async function GET(req: Request, { params }: { params: Promise<{ id: stri
     });
 
     if (!order) {
+      const globalAny: any = global;
+      if (globalAny.__mockNewOrders) {
+        const mockOrder = globalAny.__mockNewOrders.find((o: any) => o.id === id);
+        if (mockOrder) {
+          return NextResponse.json({ order: mockOrder });
+        }
+      }
       return NextResponse.json({ error: "Order not found" }, { status: 404 });
     }
 
@@ -45,7 +52,16 @@ export async function GET(req: Request, { params }: { params: Promise<{ id: stri
   } catch (error) {
     console.error("Failed to fetch order:", error);
     
-    // FALLBACK for demo purposes when DB is unreachable
+    // Check in-memory mock orders first
+    const globalAny: any = global;
+    if (globalAny.__mockNewOrders) {
+      const mockOrder = globalAny.__mockNewOrders.find((o: any) => o.id === id);
+      if (mockOrder) {
+        return NextResponse.json({ order: mockOrder });
+      }
+    }
+    
+    // FALLBACK for demo purposes when DB is unreachable and it's not in memory
     if (id === 'ORD-137929' || id === '123456' || id.toLowerCase().startsWith('ord-')) {
       return NextResponse.json({
         order: {

@@ -4,13 +4,24 @@ import prisma from '@/lib/prisma';
 import { format } from 'date-fns';
 
 export default async function AdminOrdersPage() {
-  let orders: any[] = []; try { orders = await prisma.order.findMany({
-    include: {
-      user: true,
-      items: true
-    },
-    orderBy: { createdAt: 'desc' }
-  }); } catch(e) {}
+  let orders: any[] = []; 
+  try { 
+    orders = await prisma.order.findMany({
+      include: {
+        user: true,
+        items: true
+      },
+      orderBy: { createdAt: 'desc' }
+    }); 
+  } catch(e) {
+    console.error("Database unavailable for orders", e);
+  }
+  
+  // Append new mock orders created in this session
+  const globalAny: any = global;
+  if (globalAny.__mockNewOrders && globalAny.__mockNewOrders.length > 0) {
+    orders = [...globalAny.__mockNewOrders, ...orders];
+  }
 
   return (
     <div>

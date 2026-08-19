@@ -58,6 +58,31 @@ export async function POST(req: Request) {
       orderId = order.id;
     } catch (dbError) {
       console.error("Prisma error during checkout, falling back to mock:", dbError);
+      
+      // Store mock order in global memory for localhost testing
+      const globalAny: any = global;
+      if (!globalAny.__mockNewOrders) globalAny.__mockNewOrders = [];
+      
+      const totalAmount = items.reduce((sum: number, item: any) => sum + (item.price * item.quantity), 0);
+      
+      globalAny.__mockNewOrders.push({
+        id: orderId,
+        userId: 'mock-user-1',
+        status: 'PROCESSING',
+        total: totalAmount,
+        createdAt: new Date().toISOString(),
+        notes: JSON.stringify(shippingAddress),
+        user: { name: `${contactInfo.firstName} ${contactInfo.lastName}` },
+        items: items.map((item: any, idx: number) => ({
+          id: `mock-item-${idx}`,
+          productId: item.productId,
+          quantity: item.quantity,
+          price: item.price,
+          size: item.size,
+          productName: item.name || `Product ${item.productId}`,
+          productImage: item.image || '/images/emerald-meadow.png'
+        }))
+      });
     }
 
     return NextResponse.json({ success: true, orderId: orderId }, { status: 201 });
