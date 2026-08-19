@@ -43,7 +43,7 @@ export function Header({ user }: HeaderProps) {
 
   if (!user) {
     navLinks.push({ label: 'LOGIN', href: '/admin/login' });
-  } else if (user.role === 'admin') {
+  } else if (user.role === 'ADMIN' || user.role === 'SUPERADMIN' || user.role === 'admin' || user.role === 'superadmin') {
     navLinks.push({ 
       label: 'ADMIN PANEL', 
       href: '/admin',

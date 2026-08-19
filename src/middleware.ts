@@ -35,7 +35,8 @@ export default auth((req) => {
   
   if (isAuthPage) {
     if (isLoggedIn) {
-      return NextResponse.redirect(new URL(role === 'ADMIN' ? '/admin' : '/', req.nextUrl));
+      const isAdmin = role === 'ADMIN' || role === 'SUPERADMIN' || role === 'admin' || role === 'superadmin';
+      return NextResponse.redirect(new URL(isAdmin ? '/admin' : '/', req.nextUrl));
     }
     return NextResponse.next();
   }
@@ -49,7 +50,8 @@ export default auth((req) => {
       }
       return NextResponse.redirect(new URL(`/login?from=${encodeURIComponent(from)}`, req.nextUrl));
     }
-    if (role !== 'ADMIN') {
+    const isAdmin = role === 'ADMIN' || role === 'SUPERADMIN' || role === 'admin' || role === 'superadmin';
+    if (!isAdmin) {
       return NextResponse.redirect(new URL('/', req.nextUrl));
     }
   }

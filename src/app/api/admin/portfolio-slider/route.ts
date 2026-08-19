@@ -5,7 +5,10 @@ import { auth } from '@/auth';
 export async function POST(req: NextRequest) {
   try {
     const session = await auth();
-    if (!session || session.user?.role !== 'admin') {
+    const role = (session?.user as any)?.role;
+    const isAdmin = role === 'ADMIN' || role === 'SUPERADMIN' || role === 'admin' || role === 'superadmin';
+    
+    if (!session || !isAdmin) {
       return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
     }
 
