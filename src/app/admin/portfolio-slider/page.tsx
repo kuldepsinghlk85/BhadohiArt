@@ -4,18 +4,24 @@ import { PortfolioSliderClient } from './PortfolioSliderClient';
 
 export default async function PortfolioSliderAdminPage() {
   // Fetch all collections
-  const collections = await prisma.collection.findMany({
-    orderBy: { name: 'asc' }
-  });
+  let collections: any[] = [];
+  let settings: any[] = [];
 
-  // Fetch all site settings related to portfolio slider
-  const settings = await prisma.siteSetting.findMany({
-    where: {
-      key: {
-        startsWith: 'portfolio_slider_'
+  try {
+    collections = await prisma.collection.findMany({
+      orderBy: { name: 'asc' }
+    });
+
+    settings = await prisma.siteSetting.findMany({
+      where: {
+        key: {
+          startsWith: 'portfolio_slider_'
+        }
       }
-    }
-  });
+    });
+  } catch (e) {
+    console.error("Failed to load portfolio slider data", e);
+  }
 
   // Map settings to collections
   const collectionsWithImages = collections.map(collection => {

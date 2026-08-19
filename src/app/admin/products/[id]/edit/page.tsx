@@ -7,19 +7,30 @@ import EditProductClient from './EditProductClient';
 export default async function AdminEditProductPage({ params }: { params: Promise<{ id: string }> }) {
   const { id } = await params;
   
-  const product = await prisma.product.findUnique({
-    where: { id },
-    include: {
-      images: true,
-      variants: true
-    }
-  });
-
-  if (!product) {
-    notFound();
+  let product: any = null;
+  let collections: any[] = [];
+  
+  try {
+    product = await prisma.product.findUnique({
+      where: { id },
+      include: {
+        images: true,
+        variants: true
+      }
+    });
+    collections = await prisma.collection.findMany();
+  } catch (e) {
+    console.error("Failed to load product for edit page", e);
   }
 
-  const collections = await prisma.collection.findMany();
+  if (!product) {
+    return (
+      <div className="p-8 text-center text-[var(--color-brand-burgundy)]">
+        <h2>Failed to load product. The database might be unreachable.</h2>
+        <Link href="/admin/products" className="underline mt-4 inline-block">Return to Products</Link>
+      </div>
+    );
+  }
 
   return (
     <div>

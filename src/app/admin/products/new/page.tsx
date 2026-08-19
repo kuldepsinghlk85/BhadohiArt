@@ -4,7 +4,12 @@ import prisma from '@/lib/prisma';
 import NewProductClient from './NewProductClient';
 
 export default async function NewProductPage() {
-  const collections = await prisma.collection.findMany();
+  let collections: any[] = [];
+  try {
+    collections = await prisma.collection.findMany();
+  } catch (e) {
+    console.error("Failed to load collections for new product page", e);
+  }
 
   return (
     <div>
