@@ -3,7 +3,9 @@ import prisma from "@/lib/prisma";
 
 export async function GET(req: Request, { params }: { params: Promise<{ id: string }> }) {
   try {
-    const { id } = await params;
+    const resolvedParams = await params;
+    // Clean the ID just in case it came directly through the URL with "ID:" prepended
+    const id = resolvedParams.id.replace(/^ID:\s*/i, '').trim();
 
     const order = await prisma.order.findUnique({
       where: { id },

@@ -20,9 +20,9 @@ export default function TrackOrderClient() {
     setOrder(null);
 
     try {
-      // In a real app we'd fetch from /api/orders/[id]
-      // Wait, we just built that! Let's use it.
-      const res = await fetch(`/api/orders/${orderId.trim()}`);
+      // Clean the order ID (users sometimes copy/paste "ID: ORD-123")
+      const cleanId = orderId.trim().replace(/^ID:\s*/i, '');
+      const res = await fetch(`/api/orders/${cleanId}`);
       
       if (!res.ok) {
         if (res.status === 404) {
