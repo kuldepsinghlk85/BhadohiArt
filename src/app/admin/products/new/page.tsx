@@ -9,6 +9,8 @@ export default async function NewProductPage() {
     collections = await prisma.collection.findMany();
   } catch (e) {
     console.error("Failed to load collections for new product page", e);
+    const { mockCollections } = await import('@/lib/mockData');
+    collections = mockCollections;
   }
 
   return (

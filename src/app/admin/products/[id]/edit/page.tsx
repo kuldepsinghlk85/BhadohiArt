@@ -21,6 +21,13 @@ export default async function AdminEditProductPage({ params }: { params: Promise
     collections = await prisma.collection.findMany();
   } catch (e) {
     console.error("Failed to load product for edit page", e);
+    const { mockCollections, mockProducts } = await import('@/lib/mockData');
+    collections = mockCollections;
+    
+    // Also try to fallback to mock product if the DB failed
+    if (!product) {
+      product = mockProducts.find(p => p.id === id || p.slug === id) || null;
+    }
   }
 
   if (!product) {
