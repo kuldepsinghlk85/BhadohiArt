@@ -1,5 +1,5 @@
-import AccountPage from '../page';
+import { redirect } from 'next/navigation';
 
 export default function AccountOrdersPage() {
-  return <AccountPage />;
+  redirect('/account');
 }

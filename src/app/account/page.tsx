@@ -13,14 +13,25 @@ export default async function AccountPage() {
     redirect('/login?callbackUrl=/account');
   }
 
-  const user = await prisma.user.findUnique({
-    where: { email: session.user.email as string },
-    include: {
-      orders: {
-        orderBy: { createdAt: 'desc' }
+  let user = null;
+  try {
+    user = await prisma.user.findUnique({
+      where: { email: session.user.email as string },
+      include: {
+        orders: {
+          orderBy: { createdAt: 'desc' }
+        }
       }
-    }
-  });
+    });
+  } catch (error) {
+    console.error("Database connection failed on /account:", error);
+    // Fallback to minimal user object to prevent crash
+    user = {
+      email: session.user.email,
+      name: session.user.name || session.user.email,
+      orders: []
+    } as any;
+  }
 
   if (!user) {
     redirect('/login');
