@@ -116,14 +116,14 @@ export default async function AdminOrderDetailPage({ params }: { params: Promise
                     </div>
                   </div>
                   <div className="font-bold text-[var(--color-brand-dark)]">
-                    ₹{item.price.toLocaleString()}
+                    ₹{(item.price || 0).toLocaleString()}
                   </div>
                 </div>
               ))}
             </div>
             <div className="mt-6 pt-4 border-t border-[var(--color-brand-border)] flex justify-between items-center">
               <span className="font-bold text-[var(--color-brand-dark)] text-lg">Total</span>
-              <span className="font-bold text-[var(--color-brand-burgundy)] text-xl">₹{order.total.toLocaleString()}</span>
+              <span className="font-bold text-[var(--color-brand-burgundy)] text-xl">₹{(order.total || 0).toLocaleString()}</span>
             </div>
           </div>
         </div>
