@@ -41,6 +41,25 @@ export default async function CollectionPage({ params }: { params: Promise<{ cat
     displayProducts = mockProducts.filter(p => p.collection?.slug === category || p.slug.includes(category));
   }
 
+  // Include in-memory mock products (for localhost when DB is unreachable)
+  const globalAny: any = global;
+  if (globalAny.__mockNewProducts && globalAny.__mockNewProducts.length > 0) {
+    const newMocks = globalAny.__mockNewProducts
+      .filter((p: any) => p.collection?.slug === category || p.collectionId === category)
+      .map((p: any) => ({
+        id: p.id,
+        name: p.name,
+        slug: p.slug,
+        description: p.description,
+        price: p.basePrice || "Request Quote",
+        collection: p.collection || { name: 'Mock Collection', slug: category },
+        image: p.images?.[0]?.url || '/images/emerald-meadow.png',
+        images: p.images
+      }));
+    
+    displayProducts = [...newMocks, ...displayProducts];
+  }
+
   return (
     <div className="bg-[#FAF7F0] min-h-screen pt-24 pb-20">
       <div className="bg-[var(--color-brand-burgundy)] text-white py-16 mb-12">

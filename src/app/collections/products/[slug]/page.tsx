@@ -47,8 +47,29 @@ export default async function ProductPage({ params }: { params: Promise<{ slug: 
 
   // Fallback if DB fetch failed or product not found
   if (!dbProduct) {
-    const { mockProducts } = await import('@/lib/mockData');
-    dbProduct = mockProducts.find(p => p.slug === slug);
+    const globalAny: any = global;
+    if (globalAny.__mockNewProducts) {
+      const mockFound = globalAny.__mockNewProducts.find((p: any) => p.slug === slug);
+      if (mockFound) {
+        dbProduct = {
+          id: mockFound.id,
+          name: mockFound.name,
+          slug: mockFound.slug,
+          description: mockFound.description,
+          price: mockFound.basePrice || "Request Quote",
+          type: mockFound.collection?.name || 'Mock Collection',
+          priceMode: mockFound.priceMode,
+          image: mockFound.images?.[0]?.url || '/images/emerald-meadow.png',
+          features: mockFound.features || [],
+          images: mockFound.images?.map((img: any) => img.url) || [],
+        };
+      }
+    }
+    
+    if (!dbProduct) {
+      const { mockProducts } = await import('@/lib/mockData');
+      dbProduct = mockProducts.find(p => p.slug === slug);
+    }
   }
 
   if (!dbProduct) {

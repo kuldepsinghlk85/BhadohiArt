@@ -2,36 +2,80 @@ import React from 'react';
 import Link from 'next/link';
 import { ChevronLeft, ChevronRight, Star } from 'lucide-react';
 import { Button } from '@/components/ui/button';
-export function BestSellers() {
-  const products = [
-    {
-      id: "mock1",
-      name: "Emerald Meadow",
-      type: "Hand-Knotted",
-      price: "₹45,000",
-      image: "/images/emerald-meadow.png",
+import prisma from '@/lib/prisma';
+
+export async function BestSellers() {
+  let products: any[] = [];
+  
+  try {
+    const dbProducts = await prisma.product.findMany({
+      where: { isBestSeller: true, isVisible: true },
+      include: { collection: true, images: true },
+      take: 5
+    });
+    
+    products = dbProducts.map(p => ({
+      id: p.id,
+      name: p.name,
+      type: p.collection?.name || 'Carpet',
+      price: p.basePrice || "Request Quote",
+      image: p.images?.find((img: any) => img.isMain)?.url || p.images?.[0]?.url || '/images/emerald-meadow.png',
+      rating: p.rating || 5,
+      slug: p.slug
+    }));
+  } catch (e) {
+    const { mockProducts } = await import('@/lib/mockData');
+    products = mockProducts.slice(0, 5).map(p => ({
+      id: p.id,
+      name: p.name,
+      type: p.collection?.name || 'Carpet',
+      price: p.price || "Request Quote",
+      image: p.image || '/images/emerald-meadow.png',
       rating: 5,
-      slug: "emerald-meadow"
-    },
-    {
-      id: "mock2",
-      name: "Arctic Pearl",
-      type: "Hand-Tufted",
-      price: "₹25,000",
-      image: "/images/arctic-pearl.png",
-      rating: 4,
-      slug: "arctic-pearl"
-    },
-    {
-      id: "mock3",
-      name: "Velvet Plum",
-      type: "Hand-Loomed",
-      price: "Request Quote",
-      image: "/images/velvet-plum.png",
-      rating: 5,
-      slug: "velvet-plum"
-    }
-  ];
+      slug: p.slug
+    }));
+  }
+  
+  // Append new mock products created in this session that are best sellers
+  const globalAny: any = global;
+  if (globalAny.__mockNewProducts) {
+    const mockBestSellers = globalAny.__mockNewProducts
+      .filter((p: any) => p.isBestSeller)
+      .map((p: any) => ({
+        id: p.id,
+        name: p.name,
+        type: p.collection?.name || 'Carpet',
+        price: p.basePrice || "Request Quote",
+        image: p.images?.[0]?.url || '/images/emerald-meadow.png',
+        rating: 5,
+        slug: p.slug
+      }));
+    products = [...mockBestSellers, ...products].slice(0, 5);
+  }
+  
+  // If still empty after DB failure and no mocks, use fallback hardcoded
+  if (products.length === 0) {
+    products = [
+      {
+        id: "mock1",
+        name: "Emerald Meadow",
+        type: "Hand-Knotted",
+        price: "₹45,000",
+        image: "/images/emerald-meadow.png",
+        rating: 5,
+        slug: "emerald-meadow"
+      },
+      {
+        id: "mock2",
+        name: "Arctic Pearl",
+        type: "Hand-Tufted",
+        price: "₹25,000",
+        image: "/images/arctic-pearl.png",
+        rating: 4,
+        slug: "arctic-pearl"
+      }
+    ];
+  }
 
   return (
     <section className="py-20 bg-white">

@@ -46,6 +46,28 @@ export default async function CollectionsPage({ searchParams }: { searchParams: 
     }
   }
 
+  // Include in-memory mock products (for localhost when DB is unreachable)
+  const globalAny: any = global;
+  if (globalAny.__mockNewProducts && globalAny.__mockNewProducts.length > 0) {
+    let newMocks = globalAny.__mockNewProducts.map((p: any) => ({
+      id: p.id,
+      name: p.name,
+      slug: p.slug,
+      description: p.description,
+      price: p.basePrice || "Request Quote",
+      collection: p.collection || { name: 'Mock Collection', slug: 'mock-collection' },
+      image: p.images?.[0]?.url || '/images/emerald-meadow.png',
+      images: p.images
+    }));
+    
+    // Filter mock products if categories are selected
+    if (categories.length > 0) {
+      newMocks = newMocks.filter((p: any) => categories.includes(p.collection?.slug) || categories.includes(p.collectionId));
+    }
+    
+    products = [...newMocks, ...products];
+  }
+
   return (
     <div className="bg-[#FAF7F0] min-h-screen pt-24 pb-20">
       
