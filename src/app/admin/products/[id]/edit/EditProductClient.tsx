@@ -16,7 +16,15 @@ export default function EditProductClient({
   const [files, setFiles] = useState<File[]>([]);
   
   // Parse features safely
-  const initialFeatures = product.features ? JSON.parse(product.features) : [''];
+  let parsedFeatures = [''];
+  if (product.features) {
+    if (typeof product.features === 'string') {
+      try { parsedFeatures = JSON.parse(product.features); } catch(e) { parsedFeatures = [product.features]; }
+    } else if (Array.isArray(product.features)) {
+      parsedFeatures = product.features;
+    }
+  }
+  const initialFeatures = parsedFeatures;
   const [features, setFeatures] = useState<string[]>(initialFeatures.length > 0 ? initialFeatures : ['']);
   
   // Initialize sizes
