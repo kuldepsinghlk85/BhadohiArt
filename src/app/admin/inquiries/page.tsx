@@ -35,34 +35,60 @@ export default async function AdminInquiriesPage() {
                 </td>
               </tr>
             ) : (
-              inquiries.map(inq => (
-                <tr key={inq.id} className="border-b border-[var(--color-brand-border)] hover:bg-[#FAF7F0]">
-                  <td className="p-4 text-sm align-top whitespace-nowrap">{format(new Date(inq.createdAt), 'MMM d, yyyy HH:mm')}</td>
-                  <td className="p-4 text-sm font-bold text-[var(--color-brand-dark)] align-top">{inq.name}</td>
-                  <td className="p-4 text-sm align-top">
-                    {inq.phone}
-                    <br />
-                    <a href={`https://wa.me/${inq.phone.replace(/\D/g, '')}`} target="_blank" rel="noopener noreferrer" className="text-green-600 hover:underline text-xs mt-1 inline-block">
-                      Message on WhatsApp
-                    </a>
-                  </td>
-                  <td className="p-4 text-sm align-top">
-                    <div className="whitespace-pre-wrap text-[var(--color-brand-muted)] max-w-lg">
-                      {inq.message || inq.carpetType || 'No details provided'}
-                    </div>
-                  </td>
-                  <td className="p-4 text-sm align-top">
-                    <span className={`px-2 py-1 text-[10px] font-bold rounded-full ${
-                      inq.status === 'NEW' ? 'bg-blue-100 text-blue-800' :
-                      inq.status === 'IN_PROGRESS' ? 'bg-yellow-100 text-yellow-800' :
-                      inq.status === 'QUOTED' ? 'bg-green-100 text-green-800' :
-                      'bg-gray-100 text-gray-800'
-                    }`}>
-                      {inq.status}
-                    </span>
-                  </td>
-                </tr>
-              ))
+              inquiries.map(inq => {
+                const waMessage = `Hello ${inq.name},\n\nRegarding your inquiry for ${inq.carpetType || 'our carpets'}, your current status is: *${inq.status}*.\n\nPlease let us know if you need any further assistance.`;
+                return (
+                  <tr key={inq.id} className="border-b border-[var(--color-brand-border)] hover:bg-[#FAF7F0]">
+                    <td className="p-4 text-sm align-top whitespace-nowrap">{format(new Date(inq.createdAt), 'MMM d, yyyy HH:mm')}</td>
+                    <td className="p-4 text-sm font-bold text-[var(--color-brand-dark)] align-top">{inq.name}</td>
+                    <td className="p-4 text-sm align-top">
+                      {inq.phone}
+                      <br />
+                      <a href={`https://wa.me/${inq.phone.replace(/\D/g, '')}?text=${encodeURIComponent(waMessage)}`} target="_blank" rel="noopener noreferrer" className="text-[#25D366] font-bold hover:underline text-xs mt-1 inline-flex items-center gap-1">
+                        Send WhatsApp Update
+                      </a>
+                    </td>
+                    <td className="p-4 text-sm align-top">
+                      <div className="whitespace-pre-wrap text-[var(--color-brand-muted)] max-w-lg">
+                        {inq.message || inq.carpetType || 'No details provided'}
+                      </div>
+                    </td>
+                    <td className="p-4 text-sm align-top">
+                      <form action={async (formData) => {
+                        "use server";
+                        try {
+                          await prisma.quotation.update({
+                            where: { id: inq.id },
+                            data: { status: formData.get("status") as string }
+                          });
+                        } catch(e) {
+                          const globalAny: any = global;
+                          if (globalAny.__mockInquiries) {
+                            const mock = globalAny.__mockInquiries.find((m:any) => m.id === inq.id);
+                            if (mock) mock.status = formData.get("status");
+                          }
+                        }
+                        const { revalidatePath } = await import('next/cache');
+                        revalidatePath('/admin/inquiries');
+                      }} className="flex items-center gap-2">
+                        <select 
+                          name="status"
+                          defaultValue={inq.status}
+                          className="border border-[var(--color-brand-border)] px-2 py-1 text-xs outline-none"
+                        >
+                          <option value="NEW">NEW</option>
+                          <option value="IN_PROGRESS">IN PROGRESS</option>
+                          <option value="QUOTED">QUOTED</option>
+                          <option value="CLOSED">CLOSED</option>
+                        </select>
+                        <button type="submit" className="bg-[var(--color-brand-dark)] text-white px-2 py-1 text-xs hover:bg-[var(--color-brand-burgundy)]">
+                          Save
+                        </button>
+                      </form>
+                    </td>
+                  </tr>
+                );
+              })
             )}
           </tbody>
         </table>

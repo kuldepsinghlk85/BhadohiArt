@@ -10,6 +10,7 @@ async function updateOrderStatus(formData: FormData) {
   const id = formData.get("id") as string;
   const status = formData.get("status") as string;
   const estimatedDelivery = formData.get("estimatedDelivery") as string;
+  const notes = formData.get("notes") as string;
   
   if (id && status) {
     try {
@@ -17,6 +18,7 @@ async function updateOrderStatus(formData: FormData) {
         where: { id },
         data: { 
           status,
+          notes,
           estimatedDelivery: estimatedDelivery ? new Date(estimatedDelivery) : null
         }
       });
@@ -27,6 +29,7 @@ async function updateOrderStatus(formData: FormData) {
         const mockOrder = globalAny.__mockNewOrders.find((o: any) => o.id === id);
         if (mockOrder) {
           mockOrder.status = status;
+          if (notes !== undefined) mockOrder.notes = notes;
           if (estimatedDelivery) mockOrder.estimatedDelivery = new Date(estimatedDelivery).toISOString();
         }
       }
@@ -66,8 +69,14 @@ export default async function AdminOrderDetailPage({ params }: { params: Promise
     }
   }
 
+  let trackingText = '';
+  if (order.notes && !order.notes.startsWith('{')) {
+    // Basic check so we don't output JSON shipping address if it was reused for that
+    trackingText = `\n\nDelivery/Tracking Update:\n${order.notes}`;
+  }
+
   const invoiceUrl = `https://bhadohiartsweave.in/invoice/${order.id}`;
-  const waMessage = `Hello ${order.user.name || 'Customer'},\n\nYour order #${order.id.slice(-8).toUpperCase()} status has been updated to: *${order.status}*.\n\nYou can view your invoice and tracking details here:\n${invoiceUrl}\n\nThank you for shopping with Bhadohi Arts & Weave!`;
+  const waMessage = `Hello ${order.user.name || 'Customer'},\n\nYour order #${order.id.slice(-8).toUpperCase()} status has been updated to: *${order.status}*.\n\nYou can view your invoice here:\n${invoiceUrl}${trackingText}\n\nThank you for shopping with Bhadohi Arts & Weave!`;
 
   return (
     <div>
@@ -97,10 +106,10 @@ export default async function AdminOrderDetailPage({ params }: { params: Promise
           <div className="bg-white border border-[var(--color-brand-border)] p-6">
             <h2 className="text-xl font-bold font-sans text-[var(--color-brand-dark)] mb-4">Items</h2>
             <div className="space-y-4">
-              {order.items.map(item => (
+              {order.items.map((item: any) => (
                 <div key={item.id} className="flex justify-between items-center border-b border-[var(--color-brand-border)] pb-4 last:border-0 last:pb-0">
                   <div>
-                    <h3 className="font-bold text-[var(--color-brand-dark)]">{item.product.name}</h3>
+                    <h3 className="font-bold text-[var(--color-brand-dark)]">{item.productName || item.product?.name || 'Product'}</h3>
                     <div className="text-sm text-[var(--color-brand-muted)]">
                       Qty: {item.quantity} 
                       {item.size && <span> | Size: {item.size}</span>}
@@ -136,7 +145,8 @@ export default async function AdminOrderDetailPage({ params }: { params: Promise
                   <option value="PENDING">PENDING</option>
                   <option value="PROCESSING">PROCESSING</option>
                   <option value="SHIPPED">SHIPPED</option>
-                  <option value="COMPLETED">COMPLETED</option>
+                  <option value="OUT_FOR_DELIVERY">OUT FOR DELIVERY</option>
+                  <option value="DELIVERED">DELIVERED</option>
                   <option value="CANCELLED">CANCELLED</option>
                 </select>
               </div>
@@ -148,6 +158,16 @@ export default async function AdminOrderDetailPage({ params }: { params: Promise
                   name="estimatedDelivery"
                   defaultValue={order.estimatedDelivery ? new Date(order.estimatedDelivery).toISOString().split('T')[0] : ''}
                   className="w-full border border-[var(--color-brand-border)] px-3 py-2 text-sm outline-none focus:border-[var(--color-brand-burgundy)]"
+                />
+              </div>
+
+              <div>
+                <label className="block text-xs font-bold text-[var(--color-brand-muted)] mb-1 uppercase tracking-wider">Tracking Info / Courier Notes</label>
+                <textarea 
+                  name="notes"
+                  defaultValue={(!order.notes || order.notes.startsWith('{')) ? '' : order.notes}
+                  placeholder="e.g. Courier: BlueDart, AWB: 12345678"
+                  className="w-full border border-[var(--color-brand-border)] px-3 py-2 text-sm outline-none focus:border-[var(--color-brand-burgundy)] h-20"
                 />
               </div>
 
