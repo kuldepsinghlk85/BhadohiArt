@@ -35,6 +35,7 @@ export default async function CollectionsPage({ searchParams }: { searchParams: 
         description: p.description,
         price: p.basePrice || "Request Quote",
         collection: p.collection,
+        image: p.images?.find((img: any) => img.isMain)?.url || p.images?.[0]?.url || '/images/emerald-meadow.png',
         images: p.images
       }));
     }

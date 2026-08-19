@@ -56,7 +56,13 @@ export default async function ProductPage({ params }: { params: Promise<{ slug: 
   }
 
   const mainImage = dbProduct.image || '/images/emerald-meadow.png';
-  const allImages = dbProduct.images || [mainImage];
+  let allImages = dbProduct.images || [mainImage];
+  
+  // If dbProduct is from mockData, images is an array of objects
+  if (allImages.length > 0 && typeof allImages[0] === 'object') {
+    allImages = allImages.map((img: any) => img.url);
+  }
+
   if (allImages.length === 0 && mainImage) {
     allImages.push(mainImage);
   }
