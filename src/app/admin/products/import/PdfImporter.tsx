@@ -191,11 +191,11 @@ export default function PdfImporter({ collections }: { collections: Collection[]
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
             {extractedProducts.map((product) => (
               <div key={product.id} className="border border-gray-200 rounded-lg overflow-hidden bg-white shadow-sm flex flex-col">
-                <div className="relative aspect-square bg-gray-100 border-b border-gray-200 group">
+                <div className="relative aspect-square bg-gray-100 border-b border-gray-200">
                   <img src={product.imageDataUrl} className="w-full h-full object-contain" alt={product.name} />
                   <button 
                     onClick={() => removeProduct(product.id)}
-                    className="absolute top-2 right-2 p-1.5 bg-white text-red-500 rounded-full shadow-md opacity-0 group-hover:opacity-100 transition-opacity"
+                    className="absolute top-2 right-2 p-1.5 bg-red-50 text-red-500 rounded-full shadow-md hover:bg-red-100 transition-colors"
                     title="Remove from import"
                   >
                     <X size={16} />
@@ -204,7 +204,15 @@ export default function PdfImporter({ collections }: { collections: Collection[]
                 
                 <div className="p-4 space-y-4 flex-1 flex flex-col">
                   <div>
-                    <label className="block text-xs font-bold text-gray-500 mb-1">Product Name</label>
+                    <div className="flex justify-between items-center mb-1">
+                      <label className="block text-xs font-bold text-gray-500">Product Name</label>
+                      <button 
+                        onClick={() => removeProduct(product.id)}
+                        className="text-xs text-red-500 hover:underline font-bold"
+                      >
+                        Delete Design
+                      </button>
+                    </div>
                     <input 
                       type="text" 
                       value={product.name}

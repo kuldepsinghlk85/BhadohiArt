@@ -1,0 +1,254 @@
+[
+  {
+    "id": "prd_1788715667773-131755329",
+    "name": "This carpet features a modern abstract wave design",
+    "slug": "this-carpet-features-a-modern-abstract-wave-design-55329",
+    "collectionId": "",
+    "priceMode": "Request Quote",
+    "basePrice": null,
+    "isVisible": true,
+    "images": [
+      {
+        "id": "img_1788715667773-131755329",
+        "url": "/uploads/1788715667773-131755329.jpg",
+        "isMain": true
+      }
+    ],
+    "createdAt": "2026-09-06T17:27:47.841Z",
+    "updatedAt": "2026-09-06T17:27:47.841Z"
+  },
+  {
+    "id": "prd_1788715667843-641708744",
+    "name": "This carpet features a modern abstract marble-insp",
+    "slug": "this-carpet-features-a-modern-abstract-marble-insp-08744",
+    "collectionId": "",
+    "priceMode": "Request Quote",
+    "basePrice": null,
+    "isVisible": true,
+    "images": [
+      {
+        "id": "img_1788715667843-641708744",
+        "url": "/uploads/1788715667843-641708744.jpg",
+        "isMain": true
+      }
+    ],
+    "createdAt": "2026-09-06T17:27:47.859Z",
+    "updatedAt": "2026-09-06T17:27:47.859Z"
+  },
+  {
+    "id": "prd_1788715667868-582989820",
+    "name": "This elegant abstract carpet features flowing wave",
+    "slug": "this-elegant-abstract-carpet-features-flowing-wave-89820",
+    "collectionId": "",
+    "priceMode": "Request Quote",
+    "basePrice": null,
+    "isVisible": true,
+    "images": [
+      {
+        "id": "img_1788715667868-582989820",
+        "url": "/uploads/1788715667868-582989820.jpg",
+        "isMain": true
+      }
+    ],
+    "createdAt": "2026-09-06T17:27:47.887Z",
+    "updatedAt": "2026-09-06T17:27:47.887Z"
+  },
+  {
+    "id": "prd_1788715667893-144159327",
+    "name": "A stylish modern carpet featuring an abstract flor",
+    "slug": "a-stylish-modern-carpet-featuring-an-abstract-flor-59327",
+    "collectionId": "",
+    "priceMode": "Request Quote",
+    "basePrice": null,
+    "isVisible": true,
+    "images": [
+      {
+        "id": "img_1788715667893-144159327",
+        "url": "/uploads/1788715667893-144159327.jpg",
+        "isMain": true
+      }
+    ],
+    "createdAt": "2026-09-06T17:27:47.918Z",
+    "updatedAt": "2026-09-06T17:27:47.918Z"
+  },
+  {
+    "id": "prd_1788715667923-852255395",
+    "name": "This elegant carpet features a modern abstract des",
+    "slug": "this-elegant-carpet-features-a-modern-abstract-des-55395",
+    "collectionId": "",
+    "priceMode": "Request Quote",
+    "basePrice": null,
+    "isVisible": true,
+    "images": [
+      {
+        "id": "img_1788715667923-852255395",
+        "url": "/uploads/1788715667923-852255395.jpg",
+        "isMain": true
+      }
+    ],
+    "createdAt": "2026-09-06T17:27:47.943Z",
+    "updatedAt": "2026-09-06T17:27:47.943Z"
+  },
+  {
+    "id": "prd_1788715667946-40460581",
+    "name": "This carpet features a modern abstract wave design",
+    "slug": "this-carpet-features-a-modern-abstract-wave-design-60581",
+    "collectionId": "",
+    "priceMode": "Request Quote",
+    "basePrice": null,
+    "isVisible": true,
+    "images": [
+      {
+        "id": "img_1788715667946-40460581",
+        "url": "/uploads/1788715667946-40460581.jpg",
+        "isMain": true
+      }
+    ],
+    "createdAt": "2026-09-06T17:27:47.973Z",
+    "updatedAt": "2026-09-06T17:27:47.973Z"
+  },
+  {
+    "id": "prd_1788715993730-493383697",
+    "name": "lifestyle1",
+    "slug": "lifestyle1-83697",
+    "collectionId": "",
+    "priceMode": "Request Quote",
+    "basePrice": null,
+    "isVisible": true,
+    "images": [
+      {
+        "id": "img_1788715993730-493383697",
+        "url": "/uploads/1788715993730-493383697.jpg",
+        "isMain": true
+      }
+    ],
+    "createdAt": "2026-09-06T17:33:13.832Z",
+    "updatedAt": "2026-09-06T17:33:13.832Z"
+  },
+  {
+    "id": "prd_1788715993836-200299593",
+    "name": "lifestyle2",
+    "slug": "lifestyle2-99593",
+    "collectionId": "",
+    "priceMode": "Request Quote",
+    "basePrice": null,
+    "isVisible": true,
+    "images": [
+      {
+        "id": "img_1788715993836-200299593",
+        "url": "/uploads/1788715993836-200299593.jpg",
+        "isMain": true
+      }
+    ],
+    "createdAt": "2026-09-06T17:33:13.851Z",
+    "updatedAt": "2026-09-06T17:33:13.851Z"
+  },
+  {
+    "id": "prd_1788715993853-586599333",
+    "name": "lifestyle3",
+    "slug": "lifestyle3-99333",
+    "collectionId": "",
+    "priceMode": "Request Quote",
+    "basePrice": null,
+    "isVisible": true,
+    "images": [
+      {
+        "id": "img_1788715993853-586599333",
+        "url": "/uploads/1788715993853-586599333.jpg",
+        "isMain": true
+      }
+    ],
+    "createdAt": "2026-09-06T17:33:13.867Z",
+    "updatedAt": "2026-09-06T17:33:13.867Z"
+  },
+  {
+    "id": "prd_1788715993870-713079581",
+    "name": "lifestyle4",
+    "slug": "lifestyle4-79581",
+    "collectionId": "",
+    "priceMode": "Request Quote",
+    "basePrice": null,
+    "isVisible": true,
+    "images": [
+      {
+        "id": "img_1788715993870-713079581",
+        "url": "/uploads/1788715993870-713079581.jpg",
+        "isMain": true
+      }
+    ],
+    "createdAt": "2026-09-06T17:33:13.881Z",
+    "updatedAt": "2026-09-06T17:33:13.881Z"
+  },
+  {
+    "id": "prd_1788715993884-443941631",
+    "name": "lifestyle5",
+    "slug": "lifestyle5-41631",
+    "collectionId": "",
+    "priceMode": "Request Quote",
+    "basePrice": null,
+    "isVisible": true,
+    "images": [
+      {
+        "id": "img_1788715993884-443941631",
+        "url": "/uploads/1788715993884-443941631.jpg",
+        "isMain": true
+      }
+    ],
+    "createdAt": "2026-09-06T17:33:13.896Z",
+    "updatedAt": "2026-09-06T17:33:13.896Z"
+  },
+  {
+    "id": "prd_1788715993899-721364081",
+    "name": "lifestyle5",
+    "slug": "lifestyle5-64081",
+    "collectionId": "",
+    "priceMode": "Request Quote",
+    "basePrice": null,
+    "isVisible": true,
+    "images": [
+      {
+        "id": "img_1788715993899-721364081",
+        "url": "/uploads/1788715993899-721364081.jpg",
+        "isMain": true
+      }
+    ],
+    "createdAt": "2026-09-06T17:33:13.913Z",
+    "updatedAt": "2026-09-06T17:33:13.913Z"
+  },
+  {
+    "id": "prd_1788715993915-342334225",
+    "name": "lifestyle6",
+    "slug": "lifestyle6-34225",
+    "collectionId": "",
+    "priceMode": "Request Quote",
+    "basePrice": null,
+    "isVisible": true,
+    "images": [
+      {
+        "id": "img_1788715993915-342334225",
+        "url": "/uploads/1788715993915-342334225.jpg",
+        "isMain": true
+      }
+    ],
+    "createdAt": "2026-09-06T17:33:13.931Z",
+    "updatedAt": "2026-09-06T17:33:13.931Z"
+  },
+  {
+    "id": "prd_1788715993932-872706436",
+    "name": "lifestyle7",
+    "slug": "lifestyle7-06436",
+    "collectionId": "",
+    "priceMode": "Request Quote",
+    "basePrice": null,
+    "isVisible": true,
+    "images": [
+      {
+        "id": "img_1788715993932-872706436",
+        "url": "/uploads/1788715993932-872706436.jpg",
+        "isMain": true
+      }
+    ],
+    "createdAt": "2026-09-06T17:33:13.945Z",
+    "updatedAt": "2026-09-06T17:33:13.945Z"
+  }
+]

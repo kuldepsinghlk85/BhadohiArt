@@ -22,11 +22,24 @@ export default async function AdminEditProductPage({ params }: { params: Promise
   } catch (e) {
     console.error("Failed to load product for edit page", e);
     const { mockCollections, mockProducts } = await import('@/lib/mockData');
-    collections = mockCollections;
+    const { readJsonStore } = await import('@/lib/jsonStore');
+    const jsonCols = readJsonStore<any>('collections.json');
+    collections = [...jsonCols, ...mockCollections];
+    
+    // Deduplicate
+    const unique = new Map();
+    collections.forEach(c => unique.set(c.id, c));
+    collections = Array.from(unique.values());
     
     // Also try to fallback to mock product if the DB failed
     if (!product) {
-      product = mockProducts.find(p => p.id === id || p.slug === id) || null;
+      const globalAny: any = global;
+      const memProducts = globalAny.__mockNewProducts || [];
+      const { readJsonStore } = await import('@/lib/jsonStore');
+      const jsonProducts = readJsonStore<any>('products.json');
+      
+      const allMocks = [...memProducts, ...jsonProducts, ...mockProducts];
+      product = allMocks.find(p => p.id === id || p.slug === id) || null;
     }
   }
 

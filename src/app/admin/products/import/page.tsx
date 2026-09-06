@@ -4,12 +4,19 @@ import prisma from '@/lib/prisma';
 import { readJsonStore } from '@/lib/jsonStore';
 
 export default async function PdfImportPage() {
-  let collections = [];
+  let collections: any[] = [];
   try {
     collections = await prisma.collection.findMany({ select: { id: true, name: true, slug: true }});
   } catch (e) {
     const jsonCols = readJsonStore<any>('collections.json');
-    collections = jsonCols.map(c => ({ id: c.id, name: c.name, slug: c.slug }));
+    const { mockCollections } = await import('@/lib/mockData');
+    const merged = [...jsonCols, ...mockCollections];
+    
+    // Deduplicate
+    const unique = new Map();
+    merged.forEach(c => unique.set(c.id, c));
+    
+    collections = Array.from(unique.values()).map(c => ({ id: c.id, name: c.name, slug: c.slug }));
   }
 
   return (

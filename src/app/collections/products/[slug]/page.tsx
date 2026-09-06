@@ -4,6 +4,7 @@ import Link from 'next/link';
 import { ProductGallery } from '@/components/ecommerce/ProductGallery';
 import { ProductActions } from '@/components/ecommerce/ProductActions';
 import { notFound } from 'next/navigation';
+import prisma from '@/lib/prisma';
 
 export default async function ProductPage({ params }: { params: Promise<{ slug: string }> }) {
   const { slug } = await params;
@@ -23,7 +24,7 @@ export default async function ProductPage({ params }: { params: Promise<{ slug: 
       let parsedFeatures: string[] = [];
       try {
         if (prismaProduct.features) {
-          const parsed = JSON.parse(prismaProduct.features);
+          const parsed = JSON.parse(prismaProduct.features as string);
           parsedFeatures = parsed.features || [];
         }
       } catch (e) {}
@@ -34,7 +35,7 @@ export default async function ProductPage({ params }: { params: Promise<{ slug: 
         slug: prismaProduct.slug,
         description: prismaProduct.description,
         price: prismaProduct.basePrice || "Request Quote",
-        type: prismaProduct.collection.name,
+        type: prismaProduct.collection?.name || 'Collection',
         priceMode: prismaProduct.priceMode,
         image: prismaProduct.images.find(img => img.isMain)?.url || prismaProduct.images[0]?.url,
         features: parsedFeatures,
@@ -47,28 +48,29 @@ export default async function ProductPage({ params }: { params: Promise<{ slug: 
 
   // Fallback if DB fetch failed or product not found
   if (!dbProduct) {
-    const globalAny: any = global;
-    if (globalAny.__mockNewProducts) {
-      const mockFound = globalAny.__mockNewProducts.find((p: any) => p.slug === slug);
-      if (mockFound) {
-        dbProduct = {
-          id: mockFound.id,
-          name: mockFound.name,
-          slug: mockFound.slug,
-          description: mockFound.description,
-          price: mockFound.basePrice || "Request Quote",
-          type: mockFound.collection?.name || 'Mock Collection',
-          priceMode: mockFound.priceMode,
-          image: mockFound.images?.[0]?.url || '/images/emerald-meadow.png',
-          features: mockFound.features || [],
-          images: mockFound.images?.map((img: any) => img.url) || [],
-        };
-      }
-    }
+    const { readJsonStore } = await import('@/lib/jsonStore');
+    const jsonProducts = readJsonStore<any>('products.json');
+    const { mockProducts } = await import('@/lib/mockData');
     
-    if (!dbProduct) {
-      const { mockProducts } = await import('@/lib/mockData');
-      dbProduct = mockProducts.find(p => p.slug === slug);
+    const globalAny: any = global;
+    const memProducts = globalAny.__mockNewProducts || [];
+    
+    const allMocks = [...memProducts, ...jsonProducts, ...mockProducts];
+    const mockFound = allMocks.find(p => p.slug === slug || p.id === slug);
+    
+    if (mockFound) {
+      dbProduct = {
+        id: mockFound.id,
+        name: mockFound.name,
+        slug: mockFound.slug,
+        description: mockFound.description,
+        price: mockFound.basePrice || mockFound.price || "Request Quote",
+        type: mockFound.collection?.name || mockFound.type || 'Mock Collection',
+        priceMode: mockFound.priceMode || 'Request Quote',
+        image: mockFound.images?.[0]?.url || mockFound.image || '/images/emerald-meadow.png',
+        features: mockFound.features || [],
+        images: mockFound.images?.map((img: any) => img.url) || (mockFound.image ? [mockFound.image] : []),
+      };
     }
   }
 

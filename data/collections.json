@@ -1,0 +1,21 @@
+[
+  {
+    "id": "col_1788716339321",
+    "name": "lifestyle",
+    "slug": "lifestyle",
+    "description": "A luxurious modern bedroom featuring a full-wall fitted textured carpet in elegant grey tones. The space is designed with premium interiors, warm ambient lighting, sleek furniture, and a sophisticated aesthetic that creates a calm and upscale atmosphere",
+    "image": "/uploads/1788716254831-980969026.jpg",
+    "sliderImages": [
+      "/uploads/1788716328812-629668747.jpg",
+      "/uploads/1788716328821-212352326.jpg",
+      "/uploads/1788716328828-649265908.jpg",
+      "/uploads/1788716328837-343807195.jpg",
+      "/uploads/1788716337378-994198203.jpg"
+    ],
+    "createdAt": "2026-09-06T17:38:59.323Z",
+    "updatedAt": "2026-09-06T17:38:59.323Z",
+    "_count": {
+      "products": 0
+    }
+  }
+]
