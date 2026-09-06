@@ -38,14 +38,16 @@ export default async function CollectionPage({ params }: { params: Promise<{ cat
 
   if (displayProducts.length === 0) {
     const { mockProducts } = await import('@/lib/mockData');
-    displayProducts = mockProducts.filter(p => p.collection?.slug === category || p.slug.includes(category));
+    displayProducts = mockProducts.filter(p => 
+      (p.collection?.slug === category || p.slug.includes(category)) && p.isVisible !== false
+    );
   }
 
   // Include in-memory mock products (for localhost when DB is unreachable)
   const globalAny: any = global;
   if (globalAny.__mockNewProducts && globalAny.__mockNewProducts.length > 0) {
     const newMocks = globalAny.__mockNewProducts
-      .filter((p: any) => p.collection?.slug === category || p.collectionId === category)
+      .filter((p: any) => (p.collection?.slug === category || p.collectionId === category) && p.isVisible !== false)
       .map((p: any) => ({
         id: p.id,
         name: p.name,

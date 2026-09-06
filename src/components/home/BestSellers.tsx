@@ -25,7 +25,9 @@ export async function BestSellers() {
     }));
   } catch (e) {
     const { mockProducts } = await import('@/lib/mockData');
-    products = mockProducts.slice(0, 5).map(p => ({
+    products = mockProducts
+      .filter((p: any) => p.isVisible !== false)
+      .slice(0, 5).map(p => ({
       id: p.id,
       name: p.name,
       type: p.collection?.name || 'Carpet',
@@ -40,7 +42,7 @@ export async function BestSellers() {
   const globalAny: any = global;
   if (globalAny.__mockNewProducts) {
     const mockBestSellers = globalAny.__mockNewProducts
-      .filter((p: any) => p.isBestSeller)
+      .filter((p: any) => p.isBestSeller && p.isVisible !== false)
       .map((p: any) => ({
         id: p.id,
         name: p.name,

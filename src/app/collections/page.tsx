@@ -41,6 +41,7 @@ export default async function CollectionsPage({ searchParams }: { searchParams: 
     }
   } catch (e) {
     // Fallback to mock
+    products = products.filter(p => p.isVisible !== false);
     if (categories.length > 0) {
       products = products.filter(p => categories.includes(p.collection?.slug));
     }
@@ -49,7 +50,9 @@ export default async function CollectionsPage({ searchParams }: { searchParams: 
   // Include in-memory mock products (for localhost when DB is unreachable)
   const globalAny: any = global;
   if (globalAny.__mockNewProducts && globalAny.__mockNewProducts.length > 0) {
-    let newMocks = globalAny.__mockNewProducts.map((p: any) => ({
+    let newMocks = globalAny.__mockNewProducts
+      .filter((p: any) => p.isVisible !== false)
+      .map((p: any) => ({
       id: p.id,
       name: p.name,
       slug: p.slug,

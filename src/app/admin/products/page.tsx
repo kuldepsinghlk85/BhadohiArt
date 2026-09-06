@@ -17,6 +17,31 @@ async function deleteProduct(formData: FormData) {
   revalidatePath('/collections');
 }
 
+async function toggleProductVisibility(formData: FormData) {
+  "use server";
+  const id = formData.get("id") as string;
+  const currentStatus = formData.get("currentStatus") === "true";
+  if (!id) return;
+  
+  try {
+    await prisma.product.update({
+      where: { id },
+      data: { isVisible: !currentStatus }
+    });
+  } catch (e) {
+    // Fallback for mock data (global mutation)
+    const globalAny: any = global;
+    if (globalAny.__mockNewProducts) {
+      const idx = globalAny.__mockNewProducts.findIndex((p: any) => p.id === id);
+      if (idx !== -1) {
+        globalAny.__mockNewProducts[idx].isVisible = !currentStatus;
+      }
+    }
+  }
+  revalidatePath('/admin/products');
+  revalidatePath('/collections');
+}
+
 export default async function AdminProductsPage() {
   let products: any[] = []; 
   try { 
@@ -31,7 +56,8 @@ export default async function AdminProductsPage() {
     const { mockProducts } = await import('@/lib/mockData');
     products = mockProducts.map(p => ({
       ...p,
-      images: p.images || [{ url: p.image, isMain: true }]
+      images: p.images || [{ url: p.image, isMain: true }],
+      isVisible: p.isVisible !== undefined ? p.isVisible : true
     }));
   }
 
@@ -44,7 +70,7 @@ export default async function AdminProductsPage() {
     <div>
       <div className="flex justify-between items-center mb-6 bg-white p-4 rounded-lg shadow-sm border border-gray-200">
         <h1 className="text-2xl font-bold text-gray-800 flex items-center gap-2">
-          Product Manager <span className="text-xs bg-orange-100 text-orange-600 px-2 py-1 rounded-full">{products.length} Active</span>
+          Product Manager <span className="text-xs bg-orange-100 text-orange-600 px-2 py-1 rounded-full">{products.length} Products</span>
         </h1>
         <Link 
           href="/admin/products/new" 
@@ -76,9 +102,10 @@ export default async function AdminProductsPage() {
             ) : (
               products.map(product => {
                 const mainImage = product.images?.find((img: any) => img.isMain)?.url || product.images?.[0]?.url || '/images/emerald-meadow.png';
+                const isVisible = product.isVisible !== false; // default true
                 
                 return (
-                  <tr key={product.id} className="border-b border-gray-100 hover:bg-orange-50 transition-colors">
+                  <tr key={product.id} className={`border-b border-gray-100 transition-colors ${isVisible ? 'hover:bg-orange-50' : 'bg-gray-50 hover:bg-gray-100 opacity-70'}`}>
                     <td className="p-4">
                       <div className="flex items-center gap-4">
                         <div className="h-12 w-12 rounded bg-gray-100 border border-gray-200 overflow-hidden flex-shrink-0 relative">
@@ -106,10 +133,14 @@ export default async function AdminProductsPage() {
                       </span>
                     </td>
                     <td className="p-4">
-                      <span className="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full text-xs font-bold bg-green-100 text-green-700">
-                        <span className="w-1.5 h-1.5 rounded-full bg-green-500"></span>
-                        LIVE
-                      </span>
+                      <form action={toggleProductVisibility}>
+                        <input type="hidden" name="id" value={product.id} />
+                        <input type="hidden" name="currentStatus" value={String(isVisible)} />
+                        <button type="submit" className={`inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full text-xs font-bold transition-all hover:scale-105 ${isVisible ? 'bg-green-100 text-green-700 hover:bg-red-100 hover:text-red-700' : 'bg-gray-200 text-gray-600 hover:bg-green-100 hover:text-green-700'}`} title="Click to toggle visibility">
+                          <span className={`w-1.5 h-1.5 rounded-full ${isVisible ? 'bg-green-500' : 'bg-gray-500'}`}></span>
+                          {isVisible ? 'LIVE' : 'HIDDEN'}
+                        </button>
+                      </form>
                     </td>
                     <td className="p-4 text-right">
                       <div className="flex items-center justify-end gap-2">
