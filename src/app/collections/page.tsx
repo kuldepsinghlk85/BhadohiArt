@@ -41,6 +41,16 @@ export default async function CollectionsPage({ searchParams }: { searchParams: 
     }
   } catch (e) {
     // Fallback to mock
+    const { readJsonStore } = await import('@/lib/jsonStore');
+    const jsonCollections = readJsonStore<any>('collections.json');
+    if (jsonCollections.length > 0) {
+      collections = [...jsonCollections, ...collections];
+      // Deduplicate
+      const unique = new Map();
+      collections.forEach(c => unique.set(c.slug, c));
+      collections = Array.from(unique.values());
+    }
+
     products = products.filter(p => p.isVisible !== false);
     if (categories.length > 0) {
       products = products.filter(p => categories.includes(p.collection?.slug));

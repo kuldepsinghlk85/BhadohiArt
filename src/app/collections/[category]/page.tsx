@@ -1,7 +1,9 @@
 import React from 'react';
 import { ProductGrid } from '@/components/ecommerce/ProductGrid';
+import { CollectionSlider } from '@/components/ecommerce/CollectionSlider';
 import Link from 'next/link';
 import prisma from '@/lib/prisma';
+import { readJsonStore } from '@/lib/jsonStore';
 
 export default async function CollectionPage({ params }: { params: Promise<{ category: string }> }) {
   const { category } = await params;
@@ -10,7 +12,16 @@ export default async function CollectionPage({ params }: { params: Promise<{ cat
   const title = category.split('-').map(w => w.charAt(0).toUpperCase() + w.slice(1)).join(' ') + ' Collection';
   
   let displayProducts: any[] = [];
+  let sliderImages: string[] = [];
+
   try {
+    const dbCollection = await prisma.collection.findUnique({
+      where: { slug: category }
+    });
+    if (dbCollection && dbCollection.sliderImages) {
+      sliderImages = dbCollection.sliderImages;
+    }
+
     const dbProducts = await prisma.product.findMany({
       where: {
         collection: { slug: category },
@@ -34,7 +45,14 @@ export default async function CollectionPage({ params }: { params: Promise<{ cat
         images: p.images
       }));
     }
-  } catch (e) {}
+  } catch (e) {
+    // Check JSON fallback
+    const collections = readJsonStore<any>('collections.json');
+    const match = collections.find(c => c.slug === category);
+    if (match && match.sliderImages) {
+      sliderImages = match.sliderImages;
+    }
+  }
 
   if (displayProducts.length === 0) {
     const { mockProducts } = await import('@/lib/mockData');
@@ -60,6 +78,18 @@ export default async function CollectionPage({ params }: { params: Promise<{ cat
       }));
     
     displayProducts = [...newMocks, ...displayProducts];
+  }
+
+  // Fetch all collections for the dynamic sidebar
+  let allCollections: any[] = [];
+  try {
+    allCollections = await prisma.collection.findMany({ orderBy: { name: 'asc' } });
+  } catch(e) {
+    allCollections = readJsonStore<any>('collections.json');
+    if (allCollections.length === 0) {
+      const { mockCollections } = await import('@/lib/mockData');
+      allCollections = mockCollections;
+    }
   }
 
   return (
@@ -89,17 +119,24 @@ export default async function CollectionPage({ params }: { params: Promise<{ cat
             <div className="mb-6">
               <h4 className="font-bold text-xs text-[var(--color-brand-muted)] uppercase mb-3">Categories</h4>
               <ul className="space-y-2 text-sm text-[var(--color-brand-dark)]">
-                <li className="flex items-center gap-2"><input type="checkbox" className="accent-[var(--color-brand-burgundy)]" defaultChecked={category === 'handloom'} /> Handloom</li>
-                <li className="flex items-center gap-2"><input type="checkbox" className="accent-[var(--color-brand-burgundy)]" defaultChecked={category === 'designer'} /> Designer</li>
-                <li className="flex items-center gap-2"><input type="checkbox" className="accent-[var(--color-brand-burgundy)]" defaultChecked={category === 'plush'} /> Plush</li>
-                <li className="flex items-center gap-2"><input type="checkbox" className="accent-[var(--color-brand-burgundy)]" defaultChecked={category === 'textured'} /> Textured</li>
+                {allCollections.map(c => (
+                  <li key={c.id || c.slug} className="flex items-center gap-2">
+                    <Link href={`/collections/${c.slug}`} className={`hover:text-orange-600 ${category === c.slug ? 'font-bold text-orange-600' : ''}`}>
+                      <span className="w-3 h-3 inline-block rounded-full border border-gray-400 mr-1" style={{ background: category === c.slug ? 'var(--color-brand-burgundy)' : 'transparent' }}></span>
+                      {c.name}
+                    </Link>
+                  </li>
+                ))}
               </ul>
             </div>
           </div>
         </aside>
 
-        {/* Product Grid */}
+        {/* Product Grid & Slider */}
         <div className="flex-1">
+          {sliderImages.length > 0 && (
+            <CollectionSlider images={sliderImages} />
+          )}
           <div className="flex justify-between items-center mb-6">
             <p className="text-sm text-[var(--color-brand-muted)]">Showing {displayProducts.length} products</p>
             <select className="border border-[var(--color-brand-border)] bg-white px-3 py-1.5 text-sm outline-none focus:border-[var(--color-brand-burgundy)]">

@@ -3,7 +3,7 @@
 import React from 'react';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
-import { LayoutDashboard, Package, ShoppingCart, MessageSquare, Users, Image as ImageIcon } from 'lucide-react';
+import { LayoutDashboard, Package, ShoppingCart, MessageSquare, Users, Image as ImageIcon, FolderTree, FileUp, Library } from 'lucide-react';
 
 export default function AdminSidebar() {
   const pathname = usePathname();
@@ -11,10 +11,11 @@ export default function AdminSidebar() {
   const navItems = [
     { name: 'Dashboard', href: '/admin', icon: LayoutDashboard },
     { name: 'Products', href: '/admin/products', icon: Package },
+    { name: 'PDF Import', href: '/admin/products/import', icon: FileUp },
+    { name: 'Categories', href: '/admin/collections', icon: FolderTree },
+    { name: 'Media Library', href: '/admin/media', icon: Library },
     { name: 'Orders', href: '/admin/orders', icon: ShoppingCart },
     { name: 'Inquiries', href: '/admin/inquiries', icon: MessageSquare },
-    { name: 'Users', href: '/admin/users', icon: Users },
-    { name: 'Portfolio Slider', href: '/admin/portfolio-slider', icon: ImageIcon },
   ];
 
   return (

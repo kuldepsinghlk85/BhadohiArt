@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { writeFile, mkdir } from 'fs/promises';
 import { join } from 'path';
+import { upsertJsonItem } from '@/lib/jsonStore';
 
 export async function POST(req: NextRequest) {
   try {
@@ -18,7 +19,6 @@ export async function POST(req: NextRequest) {
 
     // Iterate through all entries in the FormData
     for (const [key, value] of formData.entries()) {
-      // We expect the files to be sent as 'images' or 'files'
       if (value instanceof File) {
         const file = value;
         const bytes = await file.arrayBuffer();
@@ -26,12 +26,24 @@ export async function POST(req: NextRequest) {
         
         // Make the filename unique to avoid collisions
         const uniqueSuffix = `${Date.now()}-${Math.round(Math.random() * 1e9)}`;
-        const ext = file.name.split('.').pop();
+        const ext = file.name.split('.').pop() || '';
         const filename = `${uniqueSuffix}.${ext}`;
         const filePath = join(uploadsDir, filename);
         
         await writeFile(filePath, buffer);
-        uploadedUrls.push(`/uploads/${filename}`);
+        const url = `/uploads/${filename}`;
+        uploadedUrls.push(url);
+        
+        // Save to Media Library JSON
+        const isPdf = ext.toLowerCase() === 'pdf';
+        upsertJsonItem('media.json', {
+          id: uniqueSuffix,
+          filename: file.name,
+          url,
+          type: isPdf ? 'application/pdf' : (file.type || 'image/jpeg'),
+          size: file.size,
+          createdAt: new Date().toISOString(),
+        });
       }
     }
 
