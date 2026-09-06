@@ -24,7 +24,7 @@ export default function AboutPage() {
           <div className="relative h-[500px] w-full">
             <div className="absolute inset-0 bg-[var(--color-brand-burgundy)] translate-x-4 translate-y-4"></div>
             <img 
-              src="/images/ocean-mist.png" 
+              src="https://bhadohiartsweave.in/wp-content/uploads/2025/11/WhatsApp-Image-2025-11-27-at-11.21.43.jpeg" 
               alt="Carpet Weaving Craftsmanship" 
               className="absolute inset-0 w-full h-full object-cover border border-[var(--color-brand-border)] z-10"
             />
@@ -61,7 +61,7 @@ export default function AboutPage() {
         </div>
 
         {/* Installation & Services Grid */}
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-12 lg:gap-20 items-center">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-12 lg:gap-20 items-center mb-24">
           <div className="order-2 md:order-1">
             <h2 className="font-serif text-3xl md:text-4xl text-[var(--color-brand-dark)] mb-6">
               Beyond Manufacturing
@@ -76,10 +76,48 @@ export default function AboutPage() {
           <div className="relative h-[400px] w-full order-1 md:order-2">
             <div className="absolute inset-0 bg-[#E8E1D5] -translate-x-4 translate-y-4"></div>
             <img 
-              src="/images/royal-amethyst.png" 
+              src="https://bhadohiartsweave.in/wp-content/uploads/2025/11/WhatsApp-Image-2025-11-27-at-11.21.46.jpeg" 
               alt="Professional Installation" 
               className="absolute inset-0 w-full h-full object-cover border border-[var(--color-brand-border)] z-10"
             />
+          </div>
+        </div>
+
+        {/* Gallery Section */}
+        <div className="mb-12">
+          <div className="text-center mb-12">
+            <span className="text-[var(--color-brand-burgundy)] font-sans font-bold tracking-widest text-sm uppercase mb-4 block">
+              PORTFOLIO
+            </span>
+            <h2 className="font-serif text-3xl md:text-4xl text-[var(--color-brand-dark)]">
+              Glimpses of Our Work
+            </h2>
+          </div>
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+            <div className="aspect-square relative overflow-hidden group">
+              <img src="https://bhadohiartsweave.in/wp-content/uploads/2025/11/WhatsApp-Image-2025-11-27-at-11.21.41-1.jpeg" alt="Gallery Work 1" className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110" />
+              <div className="absolute inset-0 bg-black/20 group-hover:bg-transparent transition-colors"></div>
+            </div>
+            <div className="aspect-square relative overflow-hidden group">
+              <img src="https://bhadohiartsweave.in/wp-content/uploads/2025/11/WhatsApp-Image-2025-11-27-at-11.21.41-2.jpeg" alt="Gallery Work 2" className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110" />
+              <div className="absolute inset-0 bg-black/20 group-hover:bg-transparent transition-colors"></div>
+            </div>
+            <div className="aspect-square relative overflow-hidden group">
+              <img src="https://bhadohiartsweave.in/wp-content/uploads/2025/11/WhatsApp-Image-2025-11-27-at-11.21.42-1.jpeg" alt="Gallery Work 3" className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110" />
+              <div className="absolute inset-0 bg-black/20 group-hover:bg-transparent transition-colors"></div>
+            </div>
+            <div className="aspect-square relative overflow-hidden group">
+              <img src="https://bhadohiartsweave.in/wp-content/uploads/2025/11/WhatsApp-Image-2025-11-27-at-11.21.42.jpeg" alt="Gallery Work 4" className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110" />
+              <div className="absolute inset-0 bg-black/20 group-hover:bg-transparent transition-colors"></div>
+            </div>
+            <div className="aspect-[2/1] md:col-span-2 relative overflow-hidden group">
+              <img src="https://bhadohiartsweave.in/wp-content/uploads/2025/11/image.jpg" alt="Gallery Work 5" className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110" />
+              <div className="absolute inset-0 bg-black/20 group-hover:bg-transparent transition-colors"></div>
+            </div>
+            <div className="aspect-[2/1] md:col-span-2 relative overflow-hidden group">
+              <img src="https://bhadohiartsweave.in/wp-content/uploads/2025/11/WhatsApp-Image-2025-11-27-at-11.21.45.jpeg" alt="Gallery Work 6" className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110" />
+              <div className="absolute inset-0 bg-black/20 group-hover:bg-transparent transition-colors"></div>
+            </div>
           </div>
         </div>
 

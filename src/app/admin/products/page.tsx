@@ -1,8 +1,10 @@
 import React from 'react';
 import Link from 'next/link';
+import Image from 'next/image';
 import prisma from '@/lib/prisma';
 import { revalidatePath } from 'next/cache';
 import { DeleteButton } from '@/components/admin/DeleteButton';
+import { Edit, Eye, PlusCircle } from 'lucide-react';
 
 async function deleteProduct(formData: FormData) {
   "use server";
@@ -33,7 +35,6 @@ export default async function AdminProductsPage() {
     }));
   }
 
-  // Append any newly added mock products from the current session
   const globalAny: any = global;
   if (globalAny.__mockNewProducts && globalAny.__mockNewProducts.length > 0) {
     products = [...globalAny.__mockNewProducts, ...products];
@@ -41,52 +42,103 @@ export default async function AdminProductsPage() {
 
   return (
     <div>
-      <div className="flex justify-between items-center mb-6">
-        <h1 className="text-3xl font-serif text-[var(--color-brand-dark)]">Manage Products</h1>
+      <div className="flex justify-between items-center mb-6 bg-white p-4 rounded-lg shadow-sm border border-gray-200">
+        <h1 className="text-2xl font-bold text-gray-800 flex items-center gap-2">
+          Product Manager <span className="text-xs bg-orange-100 text-orange-600 px-2 py-1 rounded-full">{products.length} Active</span>
+        </h1>
         <Link 
           href="/admin/products/new" 
-          className="bg-[var(--color-brand-burgundy)] text-white px-4 py-2 text-sm font-bold hover:bg-[var(--color-brand-dark)] transition-colors"
+          className="bg-orange-500 text-white px-4 py-2 text-sm font-bold rounded flex items-center gap-2 hover:bg-orange-600 transition-colors shadow-sm"
         >
-          + Add New Product
+          <PlusCircle size={16} />
+          Add New Product
         </Link>
       </div>
 
-      <div className="bg-white border border-[var(--color-brand-border)] overflow-x-auto">
+      <div className="bg-white border border-gray-200 rounded-lg shadow-sm overflow-hidden">
         <table className="w-full text-left border-collapse">
           <thead>
-            <tr className="bg-[#FAF7F0] border-b border-[var(--color-brand-border)] text-[var(--color-brand-dark)]">
-              <th className="p-4 font-bold text-sm">Name</th>
-              <th className="p-4 font-bold text-sm">Collection</th>
-              <th className="p-4 font-bold text-sm">Price Mode</th>
-              <th className="p-4 font-bold text-sm">Rating</th>
-              <th className="p-4 font-bold text-sm text-right">Actions</th>
+            <tr className="bg-gray-50 border-b border-gray-200 text-gray-600 uppercase text-xs tracking-wider">
+              <th className="p-4 font-bold">Image & Product</th>
+              <th className="p-4 font-bold">Collection</th>
+              <th className="p-4 font-bold">Price Mode</th>
+              <th className="p-4 font-bold">Status</th>
+              <th className="p-4 font-bold text-right">Actions</th>
             </tr>
           </thead>
           <tbody>
             {products.length === 0 ? (
               <tr>
-                <td colSpan={5} className="p-4 text-center text-[var(--color-brand-muted)]">
-                  No products found. Add your first product!
+                <td colSpan={5} className="p-8 text-center text-gray-500">
+                  No products found. Click "Add New Product" to get started!
                 </td>
               </tr>
             ) : (
-              products.map(product => (
-                <tr key={product.id} className="border-b border-[var(--color-brand-border)] hover:bg-[#FAF7F0]">
-                  <td className="p-4 text-sm">{product.name}</td>
-                  <td className="p-4 text-sm">{product.collection.name}</td>
-                  <td className="p-4 text-sm">{product.priceMode}</td>
-                  <td className="p-4 text-sm">{product.rating}</td>
-                  <td className="p-4 text-sm text-right">
-                    <Link href={`/admin/products/${product.id}/edit`} className="text-[var(--color-brand-burgundy)] hover:underline font-bold text-xs mr-4">
-                      Edit
-                    </Link>
-                    <form action={deleteProduct} className="inline-block">
-                      <input type="hidden" name="id" value={product.id} />
-                      <DeleteButton />
-                    </form>
-                  </td>
-                </tr>
-              ))
+              products.map(product => {
+                const mainImage = product.images?.find((img: any) => img.isMain)?.url || product.images?.[0]?.url || '/images/emerald-meadow.png';
+                
+                return (
+                  <tr key={product.id} className="border-b border-gray-100 hover:bg-orange-50 transition-colors">
+                    <td className="p-4">
+                      <div className="flex items-center gap-4">
+                        <div className="h-12 w-12 rounded bg-gray-100 border border-gray-200 overflow-hidden flex-shrink-0 relative">
+                          <Image 
+                            src={mainImage} 
+                            alt={product.name}
+                            fill
+                            className="object-cover"
+                          />
+                        </div>
+                        <div>
+                          <p className="font-bold text-sm text-gray-800">{product.name}</p>
+                          <p className="text-xs text-gray-500 font-mono mt-0.5">ID: {product.id.slice(-6).toUpperCase()}</p>
+                        </div>
+                      </div>
+                    </td>
+                    <td className="p-4">
+                      <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-blue-100 text-blue-800">
+                        {product.collection?.name || 'N/A'}
+                      </span>
+                    </td>
+                    <td className="p-4">
+                      <span className="text-sm font-medium text-gray-700">
+                        {product.priceMode}
+                      </span>
+                    </td>
+                    <td className="p-4">
+                      <span className="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full text-xs font-bold bg-green-100 text-green-700">
+                        <span className="w-1.5 h-1.5 rounded-full bg-green-500"></span>
+                        LIVE
+                      </span>
+                    </td>
+                    <td className="p-4 text-right">
+                      <div className="flex items-center justify-end gap-2">
+                        <Link 
+                          href={`/products/${product.slug}`}
+                          target="_blank"
+                          className="p-1.5 text-gray-400 hover:text-gray-700 hover:bg-gray-100 rounded transition-colors"
+                          title="View on site"
+                        >
+                          <Eye size={16} />
+                        </Link>
+                        <Link 
+                          href={`/admin/products/${product.id}/edit`} 
+                          className="p-1.5 text-orange-500 hover:text-orange-700 hover:bg-orange-100 rounded transition-colors"
+                          title="Edit Product"
+                        >
+                          <Edit size={16} />
+                        </Link>
+                        <form action={deleteProduct} className="inline-block">
+                          <input type="hidden" name="id" value={product.id} />
+                          <button type="submit" className="p-1.5 text-red-400 hover:text-red-700 hover:bg-red-50 rounded transition-colors" title="Delete Product">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M3 6h18"></path><path d="M19 6v14c0 1-1 2-2 2H7c-1 0-2-1-2-2V6"></path><path d="M8 6V4c0-1 1-2 2-2h4c1 0 2 1 2 2v2"></path></svg>
+                          </button>
+                        </form>
+                      </div>
+                    </td>
+                  </tr>
+                );
+              })
             )}
           </tbody>
         </table>

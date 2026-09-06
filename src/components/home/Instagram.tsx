@@ -5,12 +5,12 @@ import Link from 'next/link';
 
 export function Instagram() {
   const images = [
-    '/images/mocha-linea.png',
-    '/images/velvet-plum.png',
-    '/images/ivory-cloud.png',
-    '/images/cinnamon-earth.png',
-    '/images/arctic-pearl.png',
-    '/images/emerald-meadow.png',
+    'https://bhadohiartsweave.in/wp-content/uploads/2025/11/WhatsApp-Image-2025-11-27-at-11.21.46.jpeg',
+    'https://bhadohiartsweave.in/wp-content/uploads/2025/11/WhatsApp-Image-2025-11-27-at-11.21.44-1.jpeg',
+    'https://bhadohiartsweave.in/wp-content/uploads/2025/11/WhatsApp-Image-2025-11-27-at-11.21.44-2.jpeg',
+    'https://bhadohiartsweave.in/wp-content/uploads/2025/11/WhatsApp-Image-2025-11-27-at-11.21.43-1.jpeg',
+    'https://bhadohiartsweave.in/wp-content/uploads/2025/11/WhatsApp-Image-2025-11-27-at-11.21.45-1.jpeg',
+    'https://bhadohiartsweave.in/wp-content/uploads/2025/11/WhatsApp-Image-2025-11-27-at-11.21.45-2.jpeg',
   ];
 
   return (
