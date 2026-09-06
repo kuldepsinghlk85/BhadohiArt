@@ -17,5 +17,22 @@
     "_count": {
       "products": 0
     }
+  },
+  {
+    "id": "col_1788717399365",
+    "name": "Elegance Carpet",
+    "slug": "elegance-carpet",
+    "description": "Premium Handknotted 81 Knots/sq inch carpet featuring Hand Carded NZ Wool & Real Silk 50/50. Distressed Finish with High-Low pile. Crafted in India.",
+    "image": "/uploads/1788717377155-851618079.jpg",
+    "sliderImages": [
+      "/uploads/1788717394250-330505870.jpg",
+      "/uploads/1788717394254-376636855.jpg",
+      "/uploads/1788717394257-266632013.jpg"
+    ],
+    "createdAt": "2026-09-06T17:56:39.366Z",
+    "updatedAt": "2026-09-06T17:56:39.366Z",
+    "_count": {
+      "products": 0
+    }
   }
 ]

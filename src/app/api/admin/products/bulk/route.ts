@@ -39,17 +39,39 @@ export async function POST(req: NextRequest) {
         createdAt: new Date().toISOString(),
       });
 
-      // 2. Create the Product record
+      // 2. Resolve Collection ID and Create if it's NEW
+      let finalCollectionId = p.collectionId;
+      if (finalCollectionId.startsWith('NEW::')) {
+        const categoryName = finalCollectionId.replace('NEW::', '');
+        const slug = categoryName.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)+/g, '');
+        
+        try {
+          const newCol = await prisma.collection.create({
+            data: { name: categoryName, slug, description: '' }
+          });
+          finalCollectionId = newCol.id;
+          // Save to fallback JSON
+          upsertJsonItem('collections.json', newCol);
+        } catch (e) {
+          // If DB fails, fallback to JSON
+          finalCollectionId = `col_${Date.now()}`;
+          const newCol = { id: finalCollectionId, name: categoryName, slug, description: '', sliderImages: [] };
+          upsertJsonItem('collections.json', newCol);
+        }
+      }
+
+      // 3. Create the Product record
       const slug = p.name.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)+/g, '') + '-' + uniqueSuffix.slice(-5);
       const basePrice = p.price ? parseFloat(p.price) : null;
       
       const productData = {
         name: p.name,
         slug,
-        collectionId: p.collectionId,
+        collectionId: finalCollectionId,
         priceMode: basePrice ? 'Base Price' : 'Request Quote',
         basePrice,
-        isVisible: true,
+        description: p.description || '',
+        isVisible: p.isVisible !== undefined ? p.isVisible : true,
         images: {
           create: [{ url: imageUrl, isMain: true }]
         }
@@ -70,10 +92,11 @@ export async function POST(req: NextRequest) {
           id: `prd_${uniqueSuffix}`,
           name: p.name,
           slug,
-          collectionId: p.collectionId,
+          description: p.description || '',
+          collectionId: finalCollectionId,
           priceMode: basePrice ? 'Base Price' : 'Request Quote',
           basePrice,
-          isVisible: true,
+          isVisible: p.isVisible !== undefined ? p.isVisible : true,
           images: [{ id: `img_${uniqueSuffix}`, url: imageUrl, isMain: true }],
           createdAt: new Date().toISOString(),
           updatedAt: new Date().toISOString()

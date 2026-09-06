@@ -310,5 +310,37 @@
     "type": "image/jpeg",
     "size": 215350,
     "createdAt": "2026-09-06T17:49:45.865Z"
+  },
+  {
+    "id": "1788717377155-851618079",
+    "filename": "pdf-extract-This elegant abstract carpet features flowing wave.jpg",
+    "url": "/uploads/1788717377155-851618079.jpg",
+    "type": "image/jpeg",
+    "size": 187056,
+    "createdAt": "2026-09-06T17:56:17.157Z"
+  },
+  {
+    "id": "1788717394250-330505870",
+    "filename": "pdf-extract-This carpet features a modern abstract wave design.jpg",
+    "url": "/uploads/1788717394250-330505870.jpg",
+    "type": "image/jpeg",
+    "size": 199632,
+    "createdAt": "2026-09-06T17:56:34.252Z"
+  },
+  {
+    "id": "1788717394254-376636855",
+    "filename": "pdf-extract-lifestyle1.jpg",
+    "url": "/uploads/1788717394254-376636855.jpg",
+    "type": "image/jpeg",
+    "size": 249733,
+    "createdAt": "2026-09-06T17:56:34.256Z"
+  },
+  {
+    "id": "1788717394257-266632013",
+    "filename": "pdf-extract-This elegant abstract carpet features flowing wave.jpg",
+    "url": "/uploads/1788717394257-266632013.jpg",
+    "type": "image/jpeg",
+    "size": 187056,
+    "createdAt": "2026-09-06T17:56:34.261Z"
   }
 ]
