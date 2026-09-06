@@ -14,12 +14,18 @@ interface HeaderProps {
     role: string;
     name?: string | null;
   } | null;
+  collections?: { name: string; slug: string }[];
 }
 
-export function Header({ user }: HeaderProps) {
+export function Header({ user, collections = [] }: HeaderProps) {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [mobileDropdownOpen, setMobileDropdownOpen] = useState<string | null>(null);
   const [isInquiryModalOpen, setIsInquiryModalOpen] = useState(false);
+
+  const dynamicCollectionLinks = collections.map(c => ({
+    label: c.name,
+    href: `/collections?category=${c.slug}`
+  }));
 
   const navLinks = [
     { label: 'HOME', href: '/' },
@@ -29,7 +35,7 @@ export function Header({ user }: HeaderProps) {
       hasDropdown: true,
       subLinks: [
         { label: 'All Collections', href: '/collections' },
-        { label: 'Infinity', href: '/collections/infinity' },
+        ...dynamicCollectionLinks
       ]
     },
     { label: 'GRAND ROOM', href: '/grand-room' },
