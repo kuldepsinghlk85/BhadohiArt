@@ -1,9 +1,10 @@
 import React from 'react';
 import Image from 'next/image';
+import { Instagram } from '@/components/home/Instagram';
 
 export default function AboutPage() {
   return (
-    <div className="bg-[#FAF7F0] min-h-screen pt-32 pb-20">
+    <div className="bg-[#FAF7F0] min-h-screen pt-32 pb-0">
       <div className="container mx-auto px-4 max-w-6xl">
         
         {/* Hero Section */}
@@ -121,6 +122,11 @@ export default function AboutPage() {
           </div>
         </div>
 
+      </div>
+      
+      {/* Instagram Section from Homepage */}
+      <div className="mt-12">
+        <Instagram />
       </div>
     </div>
   );
