@@ -15,23 +15,57 @@ export default function EditProductClient({
   const [loading, setLoading] = useState(false);
   const [files, setFiles] = useState<File[]>([]);
   
+  // Default fallback values
+  const defaultFeatures = [
+    'Premium quality craftsmanship',
+    'Soft, luxurious underfoot feel',
+    'Durable and long-lasting material',
+    'Easy to clean and maintain'
+  ];
+  
+  const defaultSizes = [
+    {size: "4' x 6'", price: ''},
+    {size: "5' x 8'", price: ''},
+    {size: "8' x 10'", price: ''},
+    {size: "9' x 12'", price: ''}
+  ];
+
   // Parse features safely
-  let parsedFeatures = [''];
-  if (product.features) {
+  let parsedFeatures = defaultFeatures;
+  if (product.features && product.features.length > 0) {
     if (typeof product.features === 'string') {
-      try { parsedFeatures = JSON.parse(product.features); } catch(e) { parsedFeatures = [product.features]; }
-    } else if (Array.isArray(product.features)) {
-      parsedFeatures = product.features;
+      try { 
+        const parsed = JSON.parse(product.features); 
+        if (Array.isArray(parsed) && parsed.length > 0) {
+          parsedFeatures = parsed;
+        } else if (parsed.features && Array.isArray(parsed.features) && parsed.features.length > 0) {
+          parsedFeatures = parsed.features;
+        }
+      } catch(e) { 
+        parsedFeatures = [product.features]; 
+      }
+    } else if (Array.isArray(product.features) && product.features.length > 0) {
+      // If it's just [''] (the old default), replace with real defaults
+      if (product.features.length === 1 && product.features[0].trim() === '') {
+        parsedFeatures = defaultFeatures;
+      } else {
+        parsedFeatures = product.features;
+      }
     }
   }
-  const initialFeatures = parsedFeatures;
-  const [features, setFeatures] = useState<string[]>(initialFeatures.length > 0 ? initialFeatures : ['']);
+  const [features, setFeatures] = useState<string[]>(parsedFeatures);
   
   // Initialize sizes
   const initialSizes = product.variants && product.variants.length > 0 
     ? product.variants.map((v: any) => ({ size: v.size, price: v.price?.toString() || '' }))
-    : [{size: '', price: ''}];
+    : defaultSizes;
   const [sizes, setSizes] = useState<{size: string, price: string}[]>(initialSizes);
+
+  // Default Collection (random if not set)
+  const defaultCollectionId = product.collectionId || (collections.length > 0 ? collections[Math.floor(Math.random() * collections.length)].id : "");
+  
+  // Default Description (auto-generate if missing)
+  const defaultDescription = product.description || `Discover the elegance of the ${product.name} carpet. This beautifully crafted piece brings warmth, texture, and sophisticated style to any room.`;
 
   const handleFeatureChange = (index: number, value: string) => {
     const newFeatures = [...features];
@@ -124,7 +158,7 @@ export default function EditProductClient({
         <textarea 
           name="description" 
           rows={4}
-          defaultValue={product.description || ''}
+          defaultValue={defaultDescription}
           className="w-full border border-[var(--color-brand-border)] px-4 py-2 focus:border-[var(--color-brand-burgundy)] outline-none"
         />
       </div>
@@ -134,7 +168,7 @@ export default function EditProductClient({
         <select 
           name="collectionId" 
           required
-          defaultValue={product.collectionId}
+          defaultValue={defaultCollectionId}
           className="w-full border border-[var(--color-brand-border)] px-4 py-2 focus:border-[var(--color-brand-burgundy)] outline-none"
         >
           <option value="">Select a collection</option>
