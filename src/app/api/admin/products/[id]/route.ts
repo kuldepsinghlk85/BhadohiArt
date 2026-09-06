@@ -81,6 +81,10 @@ export async function PUT(req: NextRequest, { params }: { params: Promise<{ id: 
       }
     }
     
+    // Save to JSON storage
+    const { upsertJsonItem } = await import('@/lib/jsonStore');
+    upsertJsonItem('products.json', mockUpdatedProduct);
+    
     return NextResponse.json(mockUpdatedProduct);
   }
 }

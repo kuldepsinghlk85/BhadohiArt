@@ -250,5 +250,347 @@
     ],
     "createdAt": "2026-09-06T17:33:13.945Z",
     "updatedAt": "2026-09-06T17:33:13.945Z"
+  },
+  {
+    "id": "prd_1788716696115-500212688",
+    "name": "Lifestyle1",
+    "slug": "lifestyle1-12688",
+    "collectionId": "col_1788716339321",
+    "priceMode": "Request Quote",
+    "basePrice": null,
+    "isVisible": true,
+    "images": [
+      {
+        "id": "img_1788716696115-500212688",
+        "url": "/uploads/1788716696115-500212688.jpg",
+        "isMain": true
+      }
+    ],
+    "createdAt": "2026-09-06T17:44:56.208Z",
+    "updatedAt": "2026-09-06T17:44:56.208Z"
+  },
+  {
+    "id": "prd_1788716696213-372096573",
+    "name": "Lifestyle2",
+    "slug": "lifestyle2-96573",
+    "collectionId": "col_1788716339321",
+    "priceMode": "Request Quote",
+    "basePrice": null,
+    "isVisible": true,
+    "images": [
+      {
+        "id": "img_1788716696213-372096573",
+        "url": "/uploads/1788716696213-372096573.jpg",
+        "isMain": true
+      }
+    ],
+    "createdAt": "2026-09-06T17:44:56.230Z",
+    "updatedAt": "2026-09-06T17:44:56.230Z"
+  },
+  {
+    "id": "prd_1788716696233-667845185",
+    "name": "Lifestyle3",
+    "slug": "lifestyle3-45185",
+    "collectionId": "col_1788716339321",
+    "priceMode": "Request Quote",
+    "basePrice": null,
+    "isVisible": true,
+    "images": [
+      {
+        "id": "img_1788716696233-667845185",
+        "url": "/uploads/1788716696233-667845185.jpg",
+        "isMain": true
+      }
+    ],
+    "createdAt": "2026-09-06T17:44:56.248Z",
+    "updatedAt": "2026-09-06T17:44:56.248Z"
+  },
+  {
+    "id": "prd_1788716696250-517626338",
+    "name": "Lifestyle4",
+    "slug": "lifestyle4-26338",
+    "collectionId": "col_1788716339321",
+    "priceMode": "Request Quote",
+    "basePrice": null,
+    "isVisible": true,
+    "images": [
+      {
+        "id": "img_1788716696250-517626338",
+        "url": "/uploads/1788716696250-517626338.jpg",
+        "isMain": true
+      }
+    ],
+    "createdAt": "2026-09-06T17:44:56.264Z",
+    "updatedAt": "2026-09-06T17:44:56.264Z"
+  },
+  {
+    "id": "prd_1788716696266-583918897",
+    "name": "Lifestyle5",
+    "slug": "lifestyle5-18897",
+    "collectionId": "col_1788716339321",
+    "priceMode": "Request Quote",
+    "basePrice": null,
+    "isVisible": true,
+    "images": [
+      {
+        "id": "img_1788716696266-583918897",
+        "url": "/uploads/1788716696266-583918897.jpg",
+        "isMain": true
+      }
+    ],
+    "createdAt": "2026-09-06T17:44:56.279Z",
+    "updatedAt": "2026-09-06T17:44:56.279Z"
+  },
+  {
+    "id": "prd_1788716696281-293339772",
+    "name": "Lifestyle6",
+    "slug": "lifestyle6-39772",
+    "collectionId": "col_1788716339321",
+    "priceMode": "Request Quote",
+    "basePrice": null,
+    "isVisible": true,
+    "images": [
+      {
+        "id": "img_1788716696281-293339772",
+        "url": "/uploads/1788716696281-293339772.jpg",
+        "isMain": true
+      }
+    ],
+    "createdAt": "2026-09-06T17:44:56.295Z",
+    "updatedAt": "2026-09-06T17:44:56.295Z"
+  },
+  {
+    "id": "prd_1788716696298-439946256",
+    "name": "Lifestyle7",
+    "slug": "lifestyle7-46256",
+    "collectionId": "col_1788716339321",
+    "priceMode": "Request Quote",
+    "basePrice": null,
+    "isVisible": true,
+    "images": [
+      {
+        "id": "img_1788716696298-439946256",
+        "url": "/uploads/1788716696298-439946256.jpg",
+        "isMain": true
+      }
+    ],
+    "createdAt": "2026-09-06T17:44:56.310Z",
+    "updatedAt": "2026-09-06T17:44:56.310Z"
+  },
+  {
+    "id": "prd_1788716696312-80726765",
+    "name": "Lifestyle8",
+    "slug": "lifestyle8-26765",
+    "collectionId": "col_1788716339321",
+    "priceMode": "Request Quote",
+    "basePrice": null,
+    "isVisible": true,
+    "images": [
+      {
+        "id": "img_1788716696312-80726765",
+        "url": "/uploads/1788716696312-80726765.jpg",
+        "isMain": true
+      }
+    ],
+    "createdAt": "2026-09-06T17:44:56.327Z",
+    "updatedAt": "2026-09-06T17:44:56.327Z"
+  },
+  {
+    "id": "prd_1788716696330-353743821",
+    "name": "Lifestyle9",
+    "slug": "lifestyle9-43821",
+    "collectionId": "col_1788716339321",
+    "priceMode": "Request Quote",
+    "basePrice": null,
+    "isVisible": true,
+    "images": [
+      {
+        "id": "img_1788716696330-353743821",
+        "url": "/uploads/1788716696330-353743821.jpg",
+        "isMain": true
+      }
+    ],
+    "createdAt": "2026-09-06T17:44:56.345Z",
+    "updatedAt": "2026-09-06T17:44:56.345Z"
+  },
+  {
+    "id": "prd_1788716696347-916901427",
+    "name": "Lifestyle10",
+    "slug": "lifestyle10-01427",
+    "collectionId": "col_1788716339321",
+    "priceMode": "Request Quote",
+    "basePrice": null,
+    "isVisible": true,
+    "images": [
+      {
+        "id": "img_1788716696347-916901427",
+        "url": "/uploads/1788716696347-916901427.jpg",
+        "isMain": true
+      }
+    ],
+    "createdAt": "2026-09-06T17:44:56.365Z",
+    "updatedAt": "2026-09-06T17:44:56.365Z"
+  },
+  {
+    "id": "prd_1788716696369-998602666",
+    "name": "Lifestyle11",
+    "slug": "lifestyle11-02666",
+    "collectionId": "col_1788716339321",
+    "priceMode": "Request Quote",
+    "basePrice": null,
+    "isVisible": true,
+    "images": [
+      {
+        "id": "img_1788716696369-998602666",
+        "url": "/uploads/1788716696369-998602666.jpg",
+        "isMain": true
+      }
+    ],
+    "createdAt": "2026-09-06T17:44:56.387Z",
+    "updatedAt": "2026-09-06T17:44:56.387Z"
+  },
+  {
+    "id": "prd_1788716696390-269610323",
+    "name": "Lifestyle12",
+    "slug": "lifestyle12-10323",
+    "collectionId": "col_1788716339321",
+    "priceMode": "Request Quote",
+    "basePrice": null,
+    "isVisible": true,
+    "images": [
+      {
+        "id": "img_1788716696390-269610323",
+        "url": "/uploads/1788716696390-269610323.jpg",
+        "isMain": true
+      }
+    ],
+    "createdAt": "2026-09-06T17:44:56.406Z",
+    "updatedAt": "2026-09-06T17:44:56.406Z"
+  },
+  {
+    "id": "prd_1788716696408-72207291",
+    "name": "Lifestyle13",
+    "slug": "lifestyle13-07291",
+    "collectionId": "col_1788716339321",
+    "priceMode": "Request Quote",
+    "basePrice": null,
+    "isVisible": true,
+    "images": [
+      {
+        "id": "img_1788716696408-72207291",
+        "url": "/uploads/1788716696408-72207291.jpg",
+        "isMain": true
+      }
+    ],
+    "createdAt": "2026-09-06T17:44:56.428Z",
+    "updatedAt": "2026-09-06T17:44:56.428Z"
+  },
+  {
+    "id": "prd_1788716696432-385056044",
+    "name": "Lifestyle14",
+    "slug": "lifestyle14-56044",
+    "collectionId": "col_1788716339321",
+    "priceMode": "Request Quote",
+    "basePrice": null,
+    "isVisible": true,
+    "images": [
+      {
+        "id": "img_1788716696432-385056044",
+        "url": "/uploads/1788716696432-385056044.jpg",
+        "isMain": true
+      }
+    ],
+    "createdAt": "2026-09-06T17:44:56.454Z",
+    "updatedAt": "2026-09-06T17:44:56.454Z"
+  },
+  {
+    "id": "prd_1788716985804-263083931",
+    "name": "Heritage Carpet1",
+    "slug": "heritage-carpet1-83931",
+    "collectionId": "col_1788716339321",
+    "priceMode": "Request Quote",
+    "basePrice": null,
+    "isVisible": true,
+    "images": [
+      {
+        "id": "img_1788716985804-263083931",
+        "url": "/uploads/1788716985804-263083931.jpg",
+        "isMain": true
+      }
+    ],
+    "createdAt": "2026-09-06T17:49:45.841Z",
+    "updatedAt": "2026-09-06T17:49:45.841Z"
+  },
+  {
+    "id": "prd_1788716985843-230409019",
+    "name": "Heritage Carpet 2",
+    "slug": "heritage-carpet-2-09019",
+    "collectionId": "col_1788716339321",
+    "priceMode": "Request Quote",
+    "basePrice": null,
+    "isVisible": true,
+    "images": [
+      {
+        "id": "img_1788716985843-230409019",
+        "url": "/uploads/1788716985843-230409019.jpg",
+        "isMain": true
+      }
+    ],
+    "createdAt": "2026-09-06T17:49:45.849Z",
+    "updatedAt": "2026-09-06T17:49:45.849Z"
+  },
+  {
+    "id": "prd_1788716985850-627485376",
+    "name": "Heritage Carpet 3",
+    "slug": "heritage-carpet-3-85376",
+    "collectionId": "col_1788716339321",
+    "priceMode": "Request Quote",
+    "basePrice": null,
+    "isVisible": true,
+    "images": [
+      {
+        "id": "img_1788716985850-627485376",
+        "url": "/uploads/1788716985850-627485376.jpg",
+        "isMain": true
+      }
+    ],
+    "createdAt": "2026-09-06T17:49:45.856Z",
+    "updatedAt": "2026-09-06T17:49:45.856Z"
+  },
+  {
+    "id": "prd_1788716985857-161941493",
+    "name": "Heritage Carpet 4",
+    "slug": "heritage-carpet-4-41493",
+    "collectionId": "col_1788716339321",
+    "priceMode": "Request Quote",
+    "basePrice": null,
+    "isVisible": true,
+    "images": [
+      {
+        "id": "img_1788716985857-161941493",
+        "url": "/uploads/1788716985857-161941493.jpg",
+        "isMain": true
+      }
+    ],
+    "createdAt": "2026-09-06T17:49:45.862Z",
+    "updatedAt": "2026-09-06T17:49:45.862Z"
+  },
+  {
+    "id": "prd_1788716985864-400813214",
+    "name": "Heritage Carpet 5",
+    "slug": "heritage-carpet-5-13214",
+    "collectionId": "col_1788716339321",
+    "priceMode": "Request Quote",
+    "basePrice": null,
+    "isVisible": true,
+    "images": [
+      {
+        "id": "img_1788716985864-400813214",
+        "url": "/uploads/1788716985864-400813214.jpg",
+        "isMain": true
+      }
+    ],
+    "createdAt": "2026-09-06T17:49:45.870Z",
+    "updatedAt": "2026-09-06T17:49:45.870Z"
   }
 ]

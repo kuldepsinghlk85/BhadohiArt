@@ -11,8 +11,19 @@ async function deleteProduct(formData: FormData) {
   const id = formData.get("id") as string;
   if (!id) return;
   
-  await prisma.productImage.deleteMany({ where: { productId: id } });
-  await prisma.product.delete({ where: { id } });
+  try {
+    await prisma.productImage.deleteMany({ where: { productId: id } });
+    await prisma.product.delete({ where: { id } });
+  } catch (e) {
+    const { deleteJsonItem } = await import('@/lib/jsonStore');
+    deleteJsonItem('products.json', id);
+    
+    // Update global memory mock
+    const globalAny: any = global;
+    if (globalAny.__mockNewProducts) {
+      globalAny.__mockNewProducts = globalAny.__mockNewProducts.filter((p: any) => p.id !== id);
+    }
+  }
   revalidatePath('/admin/products');
   revalidatePath('/collections');
 }
