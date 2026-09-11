@@ -59,30 +59,29 @@ export async function POST(req: Request) {
     } catch (dbError) {
       console.error("Prisma error during checkout, falling back to mock:", dbError);
       
-      // Store mock order in global memory for localhost testing
-      const globalAny: any = global;
-      if (!globalAny.__mockNewOrders) globalAny.__mockNewOrders = [];
-      
       const totalAmount = items.reduce((sum: number, item: any) => sum + (item.price * item.quantity), 0);
       
-      globalAny.__mockNewOrders.push({
+      const newOrder = {
         id: orderId,
-        userId: 'mock-user-1',
-        status: 'PROCESSING',
+        userId: 'guest-user',
+        status: 'PENDING',
         total: totalAmount,
         createdAt: new Date().toISOString(),
         notes: JSON.stringify(shippingAddress),
-        user: { name: `${contactInfo.firstName} ${contactInfo.lastName}` },
+        user: { name: `${contactInfo.firstName} ${contactInfo.lastName}`, email: contactInfo.email, phone: contactInfo.phone },
         items: items.map((item: any, idx: number) => ({
-          id: `mock-item-${idx}`,
+          id: `item-${Date.now()}-${idx}`,
           productId: item.productId,
           quantity: item.quantity,
           price: item.price,
           size: item.size,
           productName: item.name || `Product ${item.productId}`,
-          productImage: item.image || '/images/emerald-meadow.png'
+          productImage: item.image || '/images/placeholder.png'
         }))
-      });
+      };
+      
+      const { upsertJsonItem } = await import('@/lib/jsonStore');
+      upsertJsonItem('orders.json', newOrder);
     }
 
     return NextResponse.json({ success: true, orderId: orderId }, { status: 201 });

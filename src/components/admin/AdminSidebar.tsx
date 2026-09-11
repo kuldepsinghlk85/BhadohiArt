@@ -3,7 +3,7 @@
 import React from 'react';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
-import { LayoutDashboard, Package, ShoppingCart, MessageSquare, Users, Image as ImageIcon, FolderTree, FileUp, Library } from 'lucide-react';
+import { LayoutDashboard, Package, ShoppingCart, MessageSquare, Users, Image as ImageIcon, FolderTree, FileUp, Library, Layers, Link as LinkIcon, Settings } from 'lucide-react';
 
 export default function AdminSidebar() {
   const pathname = usePathname();
@@ -13,8 +13,9 @@ export default function AdminSidebar() {
     { name: 'Products', href: '/admin/products', icon: Package },
     { name: 'PDF Import', href: '/admin/products/import', icon: FileUp },
     { name: 'Categories', href: '/admin/collections', icon: FolderTree },
-    { name: 'Media Library', href: '/admin/media', icon: Library },
+    { name: 'Slider Config', href: '/admin/portfolio-slider', icon: ImageIcon },
     { name: 'Orders', href: '/admin/orders', icon: ShoppingCart },
+    { name: 'Custom Quotes', href: '/admin/quotes', icon: LinkIcon },
     { name: 'Inquiries', href: '/admin/inquiries', icon: MessageSquare },
   ];
 

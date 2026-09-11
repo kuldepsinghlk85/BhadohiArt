@@ -14,13 +14,8 @@ export default async function AdminOrdersPage() {
       orderBy: { createdAt: 'desc' }
     }); 
   } catch(e) {
-    console.error("Database unavailable for orders", e);
-  }
-  
-  // Append new mock orders created in this session
-  const globalAny: any = global;
-  if (globalAny.__mockNewOrders && globalAny.__mockNewOrders.length > 0) {
-    orders = [...globalAny.__mockNewOrders, ...orders];
+    const { readJsonStore } = await import('@/lib/jsonStore');
+    orders = readJsonStore<any>('orders.json');
   }
 
   return (

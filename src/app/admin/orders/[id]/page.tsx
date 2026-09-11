@@ -23,15 +23,15 @@ async function updateOrderStatus(formData: FormData) {
         }
       });
     } catch (e) {
-      // Handle mock orders
-      const globalAny: any = global;
-      if (globalAny.__mockNewOrders) {
-        const mockOrder = globalAny.__mockNewOrders.find((o: any) => o.id === id);
-        if (mockOrder) {
-          mockOrder.status = status;
-          if (notes !== undefined) mockOrder.notes = notes;
-          if (estimatedDelivery) mockOrder.estimatedDelivery = new Date(estimatedDelivery).toISOString();
-        }
+      // Handle json orders
+      const { readJsonStore, upsertJsonItem } = await import('@/lib/jsonStore');
+      const orders = readJsonStore<any>('orders.json');
+      const jsonOrder = orders.find((o: any) => o.id === id);
+      if (jsonOrder) {
+        jsonOrder.status = status;
+        if (notes !== undefined) jsonOrder.notes = notes;
+        if (estimatedDelivery) jsonOrder.estimatedDelivery = new Date(estimatedDelivery).toISOString();
+        upsertJsonItem('orders.json', jsonOrder);
       }
     }
     revalidatePath(`/admin/orders/${id}`);
@@ -59,10 +59,9 @@ export default async function AdminOrderDetailPage({ params }: { params: Promise
   } catch (e) {}
 
   if (!order) {
-    const globalAny: any = global;
-    if (globalAny.__mockNewOrders) {
-      order = globalAny.__mockNewOrders.find((o: any) => o.id === id);
-    }
+    const { readJsonStore } = await import('@/lib/jsonStore');
+    const orders = readJsonStore<any>('orders.json');
+    order = orders.find((o: any) => o.id === id);
     
     if (!order) {
       notFound();
