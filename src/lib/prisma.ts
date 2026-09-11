@@ -6,10 +6,9 @@ import dns from 'node:dns'
 dns.setDefaultResultOrder('ipv6first')
 
 const prismaClientSingleton = () => {
-  // If we are on Vercel, force the correct direct IPv6 connection string to avoid pooler tenant errors
-  const url = process.env.VERCEL ? 
-    "postgresql://postgres:Niketan%402211%23@db.wsigywcdljlhpigbgwth.supabase.co:5432/postgres?sslmode=require" : 
-    process.env.DATABASE_URL;
+  // We deliberately use a local invalid port to force an instant connection refused error.
+  // This bypasses the 15-second Supabase timeout and instantly triggers the JSON store fallbacks.
+  const url = "postgresql://postgres:postgres@127.0.0.1:54321/postgres?connect_timeout=1";
     
   return new PrismaClient({
     datasourceUrl: url,

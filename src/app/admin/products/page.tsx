@@ -64,8 +64,11 @@ export default async function AdminProductsPage() {
       orderBy: { createdAt: 'desc' }
     });
   } catch (e) {
+    const { readJsonStore } = await import('@/lib/jsonStore');
+    const jsonProducts = readJsonStore<any>('products.json');
     const { mockProducts } = await import('@/lib/mockData');
-    products = mockProducts.map(p => ({
+    
+    products = [...jsonProducts, ...mockProducts].map(p => ({
       ...p,
       images: p.images || [{ url: p.image, isMain: true }],
       isVisible: p.isVisible !== undefined ? p.isVisible : true

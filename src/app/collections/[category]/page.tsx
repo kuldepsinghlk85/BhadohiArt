@@ -55,10 +55,20 @@ export default async function CollectionPage({ params }: { params: Promise<{ cat
   }
 
   if (displayProducts.length === 0) {
-    const { mockProducts } = await import('@/lib/mockData');
-    displayProducts = mockProducts.filter(p => 
-      (p.collection?.slug === category || p.slug.includes(category)) && p.isVisible !== false
-    );
+    const { readJsonStore } = await import('@/lib/jsonStore');
+    const jsonProducts = readJsonStore<any>('products.json');
+    displayProducts = jsonProducts.filter(p => 
+      (p.collectionId === category || p.slug.includes(category)) && p.isVisible !== false
+    ).map(p => ({
+      id: p.id,
+      name: p.name,
+      slug: p.slug,
+      description: p.description,
+      price: p.basePrice || "Request Quote",
+      collection: { slug: p.collectionId, name: p.collectionId },
+      image: p.images?.[0]?.url || '/images/emerald-meadow.png',
+      images: p.images
+    }));
   }
 
   // Include in-memory mock products (for localhost when DB is unreachable)

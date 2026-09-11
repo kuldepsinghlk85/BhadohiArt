@@ -40,7 +40,6 @@ export default async function CollectionsPage({ searchParams }: { searchParams: 
       }));
     }
   } catch (e) {
-    // Fallback to mock
     const { readJsonStore } = await import('@/lib/jsonStore');
     const jsonCollections = readJsonStore<any>('collections.json');
     if (jsonCollections.length > 0) {
@@ -51,9 +50,22 @@ export default async function CollectionsPage({ searchParams }: { searchParams: 
       collections = Array.from(unique.values());
     }
 
-    products = products.filter(p => p.isVisible !== false);
+    const jsonProducts = readJsonStore<any>('products.json');
+    products = jsonProducts.map((p: any) => ({
+      id: p.id,
+      name: p.name,
+      slug: p.slug,
+      description: p.description,
+      price: p.basePrice || "Request Quote",
+      collection: { slug: p.collectionId, name: p.collectionId },
+      image: p.images?.[0]?.url || '/images/emerald-meadow.png',
+      images: p.images,
+      isVisible: p.isVisible
+    }));
+
+    products = products.filter((p: any) => p.isVisible !== false);
     if (categories.length > 0) {
-      products = products.filter(p => categories.includes(p.collection?.slug));
+      products = products.filter((p: any) => categories.includes(p.collection?.slug));
     }
   }
 

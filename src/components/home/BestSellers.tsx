@@ -24,15 +24,18 @@ export async function BestSellers() {
       slug: p.slug
     }));
   } catch (e) {
+    const { readJsonStore } = await import('@/lib/jsonStore');
+    const jsonProducts = readJsonStore<any>('products.json');
     const { mockProducts } = await import('@/lib/mockData');
-    products = mockProducts
+    
+    products = [...jsonProducts, ...mockProducts]
       .filter((p: any) => p.isVisible !== false)
       .slice(0, 5).map(p => ({
       id: p.id,
       name: p.name,
-      type: p.collection?.name || 'Carpet',
-      price: p.price || "Request Quote",
-      image: p.image || '/images/emerald-meadow.png',
+      type: p.collection?.name || p.collectionId || 'Carpet',
+      price: p.price || p.basePrice || "Request Quote",
+      image: p.image || p.images?.[0]?.url || '/images/emerald-meadow.png',
       rating: 5,
       slug: p.slug
     }));
